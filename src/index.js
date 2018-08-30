@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import CurrencyCard from './components/CurrencyCard';
+import App from './components/App';
 
 const currencyData = [
     {
@@ -44,21 +44,6 @@ const currencyData = [
 // TODO Move to redux store
 const currentTrend = 'hour';
 
-const Index = () =>
-<div className="container">
-    <div className="left-pane">
-        <div className="nav-title">
-            coinlog<span className="title-dot">.</span>sh
-        </div>
-        {
-            currencyData.map( (o, index) =>
-                <CurrencyCard {...o} currentTrend={currentTrend} key={index}/>
-            )
-        }
-    </div>
-    <div className="main-pane">
-
-    </div>
-</div>;
+const Index = () => <App/>;
 
 ReactDOM.render(<Index />, document.getElementById("app"));
