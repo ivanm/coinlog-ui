@@ -23,7 +23,7 @@ class App extends React.Component {
                 for (let currency in json['RAW']) {
                     console.log(currency);
                     currencyData.push({
-                        trend: json['RAW'][currency][fiatCurrency]['CHANGEPCTDAY'].toFixed(2),
+                        trend: json['RAW'][currency][fiatCurrency]['CHANGEPCT24HOUR'].toFixed(2),
                         code: currency,
                         price: json['RAW'][currency][fiatCurrency]['PRICE'],
                         priceFormatted: json['DISPLAY'][currency][fiatCurrency]['PRICE']
