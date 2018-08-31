@@ -11,6 +11,7 @@
     "build-prod": "webpack --mode production"
   },
   "devDependencies": {
+    "@babel/preset-stage-0": "^7.0.0",
     "babel-core": "^6.26.3",
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -23,7 +24,6 @@
     "react-dom": "^16.4.1",
     "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0",
-    "nodemon": "^1.18.3",
     "webpack-dev-server": "^3.1.5"
   }
 }
