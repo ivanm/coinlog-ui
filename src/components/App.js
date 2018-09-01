@@ -115,11 +115,6 @@ class App extends React.Component {
         return(
             <div className="container">
                 <div className="left-pane">
-                    <div className={`modal ${(showOptions? 'active': '')}`}>
-                        <div className="nav-title">
-                            <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
-                        </div>
-                    </div>
                     <div className="nav-title">
                         <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
                     </div>
@@ -131,6 +126,11 @@ class App extends React.Component {
                             <CurrencyCard {...o} fiatCurrency={ fiatCurrency } key={ index }/>
                         )
                     }
+                    <div className={`modal ${(showOptions? 'active': '')}`}>
+                        <div className="nav-title">
+                            <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                        </div>
+                    </div>
                 </div>
                 <div className="main-pane">
                     <div className="main-pane-wrapper">
