@@ -25,10 +25,10 @@ class App extends React.Component {
             ],
             order: 'trend',
             sort: 'asc',
-            trend: '24h'
+            trend: '24h',
+            showOptions: false
         }
     }
-
 
     componentDidUpdate(prevProps, prevState) {
         if (
@@ -101,9 +101,13 @@ class App extends React.Component {
         });
     }
 
+    _toggleOptions = () => {
+        this.setState({ showOptions: !this.state.showOptions });
+    }
+
     render() {
 
-        const { currencyData, fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend } = this.state;
+        const { currencyData, fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions } = this.state;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
@@ -111,8 +115,13 @@ class App extends React.Component {
         return(
             <div className="container">
                 <div className="left-pane">
+                    <div className={`modal ${(showOptions? 'active': '')}`}>
+                        <div className="nav-title">
+                            <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                        </div>
+                    </div>
                     <div className="nav-title">
-                        coinlog<span className="title-dot">.</span>sh
+                        <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
                     </div>
                     <div className="nav-title">
                         |  Order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>  |  Sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>  |  Trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>  |

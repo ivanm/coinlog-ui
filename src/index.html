@@ -26,6 +26,21 @@
         }
         .left-pane {
             background-color: #2b2e33;
+            position: relative;
+        }
+        .left-pane .modal {
+            position: absolute !important;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            transition: opacity .15s linear;
+            -webkit-transition: opacity .15s linear;
+            background: black;
+            opacity: 0;
+        }
+        .left-pane .modal.active {
+            opacity: .8;
         }
         .main-pane {
             background-color: #161719;
@@ -72,6 +87,7 @@
             box-sizing: border-box;
             width: calc(100% - 10px);
         }
+
         @media only screen and (max-width: 600px) {
             .container {
                 grid-template-columns: 1fr 0fr;
