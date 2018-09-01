@@ -125,7 +125,9 @@ class App extends React.Component {
                 </div>
                 <div className="main-pane">
                     <div className="main-pane-wrapper">
-                        <div className="big-chart">
+                        <div className="main-content">
+                            <div className="big-chart">
+                            </div>
                         </div>
                     </div>
                 </div>
