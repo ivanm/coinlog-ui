@@ -10,18 +10,18 @@ class App extends React.Component {
             currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','ETC'],
             fiatCurrency: 'USD',
             orderOptions: [
-                {id: 'price', name: 'Price'},
-                {id: 'trend', name: 'Trend'},
-                {id: 'name', name: 'Name'}
+                {id: 'price', name: 'price'},
+                {id: 'trend', name: 'trend'},
+                {id: 'name', name: 'name'}
             ],
             sortOptions: [
-                {id: 'asc', name: 'ASC'},
-                {id: 'desc', name: 'DESC'}
+                {id: 'asc', name: 'asc'},
+                {id: 'desc', name: 'desc'}
             ],
             trendOptions: [
-                {id: '24h', name: '24H'},
-                {id: '1h', name: '1H'},
-                {id: '7d', name: '7D'}
+                {id: '24h', name: '24h'},
+                {id: '1h', name: '1h'},
+                {id: '7d', name: '7d'}
             ],
             order: 'trend',
             sort: 'asc',
@@ -115,20 +115,101 @@ class App extends React.Component {
         return(
             <div className="container">
                 <div className="left-pane">
-                    <div className="nav-title">
-                        <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                    <div className="multi-card-container-3f">
+                        <div className="card">
+                        </div>
+                        <div className="card">
+                        </div>
+                        <div className="card">
+                        </div>
                     </div>
-                    <div className="nav-title">
-                        |  Order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>  |  Sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>  |  Trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>  |
+                    <div className="multi-card-container grid-1fr-1fr">
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    api: <a className="important-link" target="_blank" href="https://min-api.cryptocompare.com/">cryptocompare</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div className="multi-card-container grid-1fr-1fr-1fr">
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* <div className="nav-title"> */}
+                    {/*     |  Order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>  |  Sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>  |  Trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>  | */}
+                    {/* </div> */}
                     {
                         currencyData && currencyData.map( (o, index) =>
                             <CurrencyCard {...o} fiatCurrency={ fiatCurrency } key={ index }/>
                         )
                     }
                     <div className={`modal ${(showOptions? 'active': '')}`}>
-                        <div className="nav-title">
-                            <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                        <div className="multi-card-container grid-1fr-1fr">
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div className="card-content">
+                                        <a href="#" onClick={ this._toggleOptions }>settings</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div className="card-content">
+                                        version: 0.1.0 alpha
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="multi-card-container grid-1fr-1fr-1fr">
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div className="card-content">
+                                        <a className="active-link"href='#' onClick={this._changeOrder}>api</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div className="card-content">
+                                        <a href='#' onClick={this._changeSort}>display</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div className="card-content">
+                                        <a href='#' onClick={this._changeTrend}>about</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
