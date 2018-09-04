@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from './components/App';
+import { Provider } from 'react-redux';
+import getStore from './getStore.js';
 
 const currencyData = [
     {
@@ -46,4 +48,11 @@ const currentTrend = 'hour';
 
 const Index = () => <App/>;
 
-ReactDOM.render(<Index />, document.getElementById("app"));
+let store = getStore();
+
+ReactDOM.render(
+    <Provider  store={ store }>
+        <Index/>
+    </Provider>,
+    document.getElementById("app")
+);
