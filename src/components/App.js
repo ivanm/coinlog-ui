@@ -24,9 +24,10 @@ class App extends React.Component {
                 {id: '7d', name: '7d'}
             ],
             order: 'trend',
-            sort: 'asc',
+            sort: 'desc',
             trend: '24h',
-            showOptions: false
+            showOptions: false,
+            selectedCurrency : null
         }
     }
 
@@ -93,7 +94,7 @@ class App extends React.Component {
         const { order, sort, currencyData } = this.state;
 
         const ascOrder = (a, b) => { return isNaN(a[order]) ? a[order].localeCompare(b[order]): (a[order] - b[order]) },
-            descOrder = (a, b) => { console.log('descOrderF'); return isNaN(a[order]) ? b[order].localeCompare(a[order]): (b[order] - a[order]) },
+            descOrder = (a, b) => { return isNaN(a[order]) ? b[order].localeCompare(a[order]): (b[order] - a[order]) },
             orderFunc = (sort == 'asc') ? ascOrder : descOrder;
 
         this.setState({
@@ -105,9 +106,13 @@ class App extends React.Component {
         this.setState({ showOptions: !this.state.showOptions });
     }
 
+    _handleCurrencyClick = (e, selectedCurrency) => {
+        this.setState({ selectedCurrency: (this.state.selectedCurrency != selectedCurrency) ? selectedCurrency : null });
+    }
+
     render() {
 
-        const { currencyData, fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions } = this.state;
+        const { currencyData, fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency } = this.state;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
@@ -162,13 +167,14 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="nav-title"> */}
-                    {/*     |  Order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>  |  Sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>  |  Trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>  | */}
-                    {/* </div> */}
                     {
                         currencyData && currencyData.map( (o, index) =>
-                            <CurrencyCard {...o} fiatCurrency={ fiatCurrency } key={ index }/>
+                        <CurrencyCard {...o}
+                            fiatCurrency={ fiatCurrency }
+                            key={ index }
+                            onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
+                            selected={ (selectedCurrency == o.name) }
+                        />
                         )
                     }
                     <div className={`modal ${(showOptions? 'active': '')}`}>
