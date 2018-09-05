@@ -1,11 +1,11 @@
 import {createStore, compose, applyMiddleware, combineReducers} from 'redux';
-import cryptocompareApiReducer from 'redux/reducers/cryptocompareApiReducer';
-import apiMiddleware from 'redux/middlewares/apiMiddleware';
+import dataReducer from './reducers/dataReducer';
+import { apiMiddleware } from 'redux-api-middleware';
 
-export default function getStore(initialState) {
+const configureStore = (initialState) => {
     const store = createStore(
         combineReducers({
-            cryptocompareApiReducer
+            data: dataReducer
         }),
         initialState,
         compose(
@@ -19,3 +19,4 @@ export default function getStore(initialState) {
     return store;
 }
 
+export default configureStore;

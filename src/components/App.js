@@ -1,12 +1,15 @@
 import React from "react";
 import CurrencyCard from './CurrencyCard';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as dataActions from '../redux/actions/dataActions';
+
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currencyData: null,
             currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','ETC'],
             fiatCurrency: 'USD',
             orderOptions: [
@@ -34,32 +37,16 @@ class App extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         if (
             prevState.order != this.state.order ||
-            prevState.sort != this.state.sort
+            prevState.sort != this.state.sort ||
+            prevState.trend != this.state.trend
         ) {
-            this._orderCurrencyData();
+            this.props.dataActions.orderCurrencies(this.state.order, this.state.sort);
         }
     }
 
     componentDidMount() {
-        const { currencies, fiatCurrency} = this.state,
-            currenciesQuery = currencies.join(',');
-
-        fetch('https://min-api.cryptocompare.com/data/pricemultifull?fsyms='+currenciesQuery+'&tsyms='+fiatCurrency)
-            .then((response) => response.json())
-            .then((json) => {
-                let currencyData = [];
-                for (let currency in json['RAW']) {
-                    currencyData.push({
-                        trend: json['RAW'][currency][fiatCurrency]['CHANGEPCT24HOUR'],
-                        trendFormatted: json['RAW'][currency][fiatCurrency]['CHANGEPCT24HOUR'].toFixed(2),
-                        name: currency,
-                        price: json['RAW'][currency][fiatCurrency]['PRICE'],
-                        priceFormatted: json['DISPLAY'][currency][fiatCurrency]['PRICE']
-                    });
-                }
-                this.setState({ currencyData });
-                this._orderCurrencyData()
-            });
+        const { currencies, fiatCurrency} = this.state;
+        this.props.dataActions.fetchCryptocompare(currencies, fiatCurrency);
     }
 
     _changeOrder = () => {
@@ -84,21 +71,8 @@ class App extends React.Component {
         const { trendOptions, trend } = this.state,
             trendIndex = trendOptions.findIndex((el) => el.id == trend);
 
-        this.setState(
-            { trend: trendOptions[(trendIndex == (trendOptions.length-1) ? 0 : trendIndex+1)].id },
-            this._orderCurrencyData()
-        );
-    }
-
-    _orderCurrencyData = () => {
-        const { order, sort, currencyData } = this.state;
-
-        const ascOrder = (a, b) => { return isNaN(a[order]) ? a[order].localeCompare(b[order]): (a[order] - b[order]) },
-            descOrder = (a, b) => { return isNaN(a[order]) ? b[order].localeCompare(a[order]): (b[order] - a[order]) },
-            orderFunc = (sort == 'asc') ? ascOrder : descOrder;
-
         this.setState({
-            currencyData: currencyData.sort( orderFunc )
+            trend: trendOptions[(trendIndex == (trendOptions.length-1) ? 0 : trendIndex+1)].id
         });
     }
 
@@ -112,7 +86,8 @@ class App extends React.Component {
 
     render() {
 
-        const { currencyData, fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency } = this.state;
+        const { data } = this.props;
+        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency } = this.state;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
@@ -168,7 +143,7 @@ class App extends React.Component {
                         </div>
                     </div>
                     {
-                        currencyData && currencyData.map( (o, index) =>
+                        (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
                         <CurrencyCard {...o}
                             fiatCurrency={ fiatCurrency }
                             key={ index }
@@ -231,4 +206,21 @@ class App extends React.Component {
         )
     }
 }
-export default App;
+
+
+const mapStateToProps = (state) => {
+    return {
+        data: state.data
+    };
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        dataActions: bindActionCreators(dataActions, dispatch)
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(App)

@@ -1,6 +1,7 @@
-
 const initialState = {
-    cryptocompareApi: {
+    data: {
+        loading: false,
+        currencies: []
     }
 };
 

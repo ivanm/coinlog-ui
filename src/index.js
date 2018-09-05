@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from './components/App';
 import { Provider } from 'react-redux';
-import getStore from './getStore.js';
+import configureStore from './redux/configureStore.js';
 
 const currencyData = [
     {
@@ -48,7 +48,7 @@ const currentTrend = 'hour';
 
 const Index = () => <App/>;
 
-let store = getStore();
+let store = configureStore();
 
 ReactDOM.render(
     <Provider  store={ store }>
