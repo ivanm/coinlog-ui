@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import Plot from 'react-plotly.js';
 import CurrencyCard from './CurrencyCard';
 
 import { connect } from 'react-redux';
@@ -41,6 +42,9 @@ class App extends React.Component {
             prevState.trend != this.state.trend
         ) {
             this.props.dataActions.orderCurrencies(this.state.order, this.state.sort);
+        }
+        if (this.state.selectedCurrency && prevState.selectedCurrency != this.state.selectedCurrency) {
+            this.props.dataActions.fetch24ByCurrency(this.state.selectedCurrency, this.state.fiatCurrency);
         }
     }
 
@@ -91,6 +95,60 @@ class App extends React.Component {
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
+
+        const rangeDates = data.historic24[selectedCurrency] ?
+                    [ data.historic24[selectedCurrency].date[0], data.historic24[selectedCurrency].date[data.historic24[selectedCurrency].date.length] ] : [];
+
+        const layoutGraph = {
+            width: '400',
+            dragmode: 'zoom',
+            margin: {
+                r: 10,
+                t: 25,
+                b: 40,
+                l: 60
+            },
+            font: {
+                family: 'monospace'
+            },
+            showlegend: false,
+            xaxis: {
+                showGrid: false,
+                showLine: false,
+                autorange: true,
+                gridcolor: '#474746',
+                domain: [0, 1],
+                range: rangeDates,
+                rangeslider: { range: rangeDates },
+                title: 'Date',
+                type: 'date'
+            },
+            yaxis: {
+                showLine: false,
+                showGrid: false,
+                autorange: true,
+                gridcolor: '#474746',
+                domain: [0, 1],
+                range: [114.609999778, 137.410004222],
+                type: 'linear'
+            },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)'
+        };
+
+        const dataGraph = data.historic24[selectedCurrency] ? [{
+            x: data.historic24[selectedCurrency].date,
+            close: data.historic24[selectedCurrency].close,
+            decreasing: {line: {color: '#af4d4d', width:0}},
+            high: data.historic24[selectedCurrency].high,
+            increasing: {line: {color: '#5ea35e', width: 0}},
+            line: {color: 'red'},
+            low: data.historic24[selectedCurrency].low,
+            open: data.historic24[selectedCurrency].open,
+            type: 'candlestick',
+            xaxis: 'x',
+            yaxis: 'y'
+        }] : [];
 
         return(
             <div className="container">
@@ -144,12 +202,12 @@ class App extends React.Component {
                     </div>
                     {
                         (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
-                        <CurrencyCard {...o}
-                            fiatCurrency={ fiatCurrency }
-                            key={ index }
-                            onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
-                            selected={ (selectedCurrency == o.name) }
-                        />
+                            <CurrencyCard {...o}
+                                fiatCurrency={ fiatCurrency }
+                                key={ index }
+                                onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
+                                selected={ (selectedCurrency == o.name) }
+                            />
                         )
                     }
                     <div className={`modal ${(showOptions? 'active': '')}`}>
@@ -198,6 +256,12 @@ class App extends React.Component {
                     <div className="main-pane-wrapper">
                         <div className="main-content">
                             <div className="big-chart">
+                                { selectedCurrency &&
+                                    <Plot
+                                        data= { dataGraph }
+                                        layout={ layoutGraph }
+                                    />
+                                }
                             </div>
                         </div>
                     </div>

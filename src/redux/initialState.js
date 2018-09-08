@@ -1,7 +1,8 @@
 const initialState = {
     data: {
         loading: false,
-        currencies: []
+        currencies: [],
+        historic24: {}
     }
 };
 

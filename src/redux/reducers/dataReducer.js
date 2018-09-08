@@ -41,6 +41,44 @@ const dataReducer = (state = initialState.data, action) => {
             };
         }
 
+        case types.FETCH_24_CURRENCY_REQUEST: {
+            return {
+                ...state,
+                loading: true
+            };
+        }
+
+        case types.FETCH_24_CURRENCY_SUCCESS: {
+
+            const { fiatCurrency, currency } = action.meta;
+
+            let currencyData = {
+                date: action.payload['Data'].map(el => (new Date(el.time*1000)).toISOString() ),
+                open: action.payload['Data'].map(el => el.open),
+                close: action.payload['Data'].map(el => el.close),
+                low: action.payload['Data'].map(el => el.low),
+                high: action.payload['Data'].map(el => el.high)
+            }
+
+            const historic24 = {
+                ...state.historic24,
+                [currency]: currencyData
+            }
+
+            return {
+                ...state,
+                historic24,
+                loading: false
+            };
+        }
+
+        case types.FETCH_24_CURRENCY_FAILURE: {
+            return {
+                ...state,
+                loading: false
+            };
+        }
+
         case types.ORDER_CURRENCIES: {
 
             const { order, sort } = action;
