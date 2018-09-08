@@ -9,7 +9,7 @@ class CurrencyCard extends React.Component {
         return(
             <div className="currency-card">
                 <div className="currency-code">
-                    { selected && "▸" } <a href="#" onClick={onClickCurrency}>{name}</a>
+                    <span className="currency-selector">{ selected && "▸" }</span> <a href="#" onClick={onClickCurrency}>{name}</a>
                 </div>
                 <div className={"currency-price"}>
                    {priceFormatted}
