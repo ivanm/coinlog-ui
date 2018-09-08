@@ -19,8 +19,8 @@ class App extends React.Component {
                 {id: 'name', name: 'name'}
             ],
             sortOptions: [
-                {id: 'asc', name: 'asc'},
-                {id: 'desc', name: 'desc'}
+                {id: 'asc', name: '▼'},
+                {id: 'desc', name: '▲'}
             ],
             trendOptions: [
                 {id: '24h', name: '24h'},
@@ -119,7 +119,7 @@ class App extends React.Component {
                 gridcolor: '#474746',
                 domain: [0, 1],
                 range: rangeDates,
-                rangeslider: { range: rangeDates },
+                rangeslider: { visible: false },
                 title: 'Date',
                 type: 'date'
             },
@@ -147,7 +147,8 @@ class App extends React.Component {
             open: data.historic24[selectedCurrency].open,
             type: 'candlestick',
             xaxis: 'x',
-            yaxis: 'y'
+            yaxis: 'y',
+            hoverlabel: { bgcolor: '#2a2b2d', font: { family: 'monospace', color: '#bfc4cc' } }
         }] : [];
 
         return(
