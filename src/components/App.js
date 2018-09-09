@@ -164,7 +164,7 @@ class App extends React.Component {
         return(
             <div className="container" style={{ height: viewPortHeight }}>
                 <div className="left-pane">
-                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '2fr 3fr 1fr 1fr'}}>
+                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '1fr 1fr 50px'}}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
@@ -181,15 +181,8 @@ class App extends React.Component {
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content">
-                                    EN
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
                                 <div onClick={ this._toggleOptions } className="card-content link-hover">
-                                   config
+                                   ⚙
                                 </div>
                             </div>
                         </div>
@@ -217,11 +210,18 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="multi-card-container">
+                    <div className="multi-card-container" style={{ gridTemplateColumns: '1fr 200px' }}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
                                     <a href="#" onClick={ this._toggleOptions }>search:</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                   view: cards
                                 </div>
                             </div>
                         </div>
@@ -240,18 +240,25 @@ class App extends React.Component {
                     }
                     </div>
                     <div className={`modal ${(showOptions? 'active': '')}`}>
-                        <div className="multi-card-container grid-1fr-1fr">
+                        <div className="multi-card-container" style={{ gridTemplateColumns: '1fr 1fr 50px'}}>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href="#" onClick={ this._toggleOptions }>back</a>
+                                        settings
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        version: 0.1.0 alpha
+                                       v: 0.1.0 alpha
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="card">
+                                <div className="card-wrapper">
+                                    <div onClick={ this._toggleOptions } className="card-content link-hover">
+                                        ⬅
                                     </div>
                                 </div>
                             </div>
