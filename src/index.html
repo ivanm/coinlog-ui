@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>coinlog.sh</title>
         <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css'/>
+        <meta name=viewport content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1,user-scalable=no">
     </head>
     <style>
         body {
@@ -30,8 +31,8 @@
             background-color: #232527;
             position: relative;
             display: grid;
-            grid-template-rows: 39px 44px 1fr;
-            height: 100vh;
+            grid-template-rows: 40px 40px 45px 1fr;
+            height: inherit;
         }
         .left-pane .modal {
             position: absolute !important;
@@ -51,7 +52,7 @@
         }
         .main-pane {
             background-color: #161719;
-            height: 100vh;
+            height: inherit;
             display: flex;
             justify-content: center;
             box-sizing: border-box;
@@ -115,6 +116,15 @@
         .multi-card-container.grif-2fr-1fr {
             grid-template-columns: 2fr 1fr;
         }
+        .multi-card-container.grid-2fr-2fr-1fr {
+            grid-template-columns: 2fr 2fr 1fr;
+        }
+        .multi-card-container.grid-2fr-2fr-1fr-1fr {
+            grid-template-columns: 2fr 2fr 1fr 1fr;
+        }
+        .multi-card-container.grid-3fr-3fr-1fr-1fr {
+            grid-template-columns: 3fr 3fr 1fr 1fr;
+        }
         .multi-card-container.grid-1fr-1fr {
             grid-template-columns: 1fr 1fr;
         }
@@ -143,7 +153,9 @@
         }
         .big-chart {
             width: 100%;
-            height: 100vh;
+            height: -webkit-fill-available;
+            height: -moz-fill-available;
+            height: fill-available;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -153,6 +165,12 @@
         }
         .overflow-wrapper {
             overflow: auto;
+        }
+        .link-hover {
+            cursor: pointer
+        }
+        .link-hover:hover {
+            text-decoration: underline;
         }
         @media only screen and (max-width: 600px) {
             .container {

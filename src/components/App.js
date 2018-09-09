@@ -50,7 +50,17 @@ class App extends React.Component {
 
     componentDidMount() {
         const { currencies, fiatCurrency} = this.state;
+        this._resize();
+        window.addEventListener("resize", this._resize.bind(this));
         this.props.dataActions.fetchCryptocompare(currencies, fiatCurrency);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this._resize.bind(this));
+    }
+
+    _resize = () => {
+        this.setState({ viewPortHeight: window.innerHeight });
     }
 
     _changeOrder = () => {
@@ -91,7 +101,7 @@ class App extends React.Component {
     render() {
 
         const { data } = this.props;
-        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency } = this.state;
+        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency, viewPortHeight} = this.state;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
@@ -152,13 +162,13 @@ class App extends React.Component {
         }] : [];
 
         return(
-            <div className="container">
+            <div className="container" style={{ height: viewPortHeight }}>
                 <div className="left-pane">
-                    <div className="multi-card-container grid-1fr-1fr">
+                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '2fr 3fr 1fr 1fr'}}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                    <a href="#" onClick={ this._toggleOptions }>coinlog<span className="title-dot">.</span>sh</a>
+                                    coinlog<span className="title-dot">.</span>sh
                                 </div>
                             </div>
                         </div>
@@ -169,26 +179,49 @@ class App extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    EN
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div onClick={ this._toggleOptions } className="card-content link-hover">
+                                   config
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div className="multi-card-container grid-1fr-1fr-1fr">
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content">
-                                    order: <a href='#' onClick={this._changeOrder}>{orderOption.name}</a>
+                                <div className="card-content link-hover" onClick={this._changeOrder}>
+                                    order: {orderOption.name}
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content">
-                                    sort: <a href='#' onClick={this._changeSort}>{sortOption.name}</a>
+                                <div className="card-content link-hover" onClick={this._changeSort}>
+                                    sort: {sortOption.name}
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
+                                <div className="card-content link-hover" onClick={this._changeTrend}>
+                                    trend: {trendOption.name}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="multi-card-container">
+                        <div className="card">
+                            <div className="card-wrapper">
                                 <div className="card-content">
-                                    trend: <a href='#' onClick={this._changeTrend}>{trendOption.name}</a>
+                                    <a href="#" onClick={ this._toggleOptions }>search:</a>
                                 </div>
                             </div>
                         </div>
@@ -197,6 +230,7 @@ class App extends React.Component {
                     {
                         (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
                             <CurrencyCard {...o}
+                                style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
                                 fiatCurrency={ fiatCurrency }
                                 key={ index }
                                 onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
@@ -210,7 +244,7 @@ class App extends React.Component {
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href="#" onClick={ this._toggleOptions }>settings</a>
+                                        <a href="#" onClick={ this._toggleOptions }>back</a>
                                     </div>
                                 </div>
                             </div>
