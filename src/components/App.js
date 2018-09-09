@@ -175,7 +175,7 @@ class App extends React.Component {
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                    api: <a className="important-link" target="_blank" href="https://min-api.cryptocompare.com/">cryptocompare</a>
+                                    api: <a className="important-link" target="_blank" href="https://min-api.cryptocompare.com/">cryptocompare🗗</a>
                                 </div>
                             </div>
                         </div>
@@ -191,21 +191,21 @@ class App extends React.Component {
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeOrder}>
-                                    order: {orderOption.name}
+                                    <span className="link-hover-underline">order: {orderOption.name}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeSort}>
-                                    sort: {sortOption.name}
+                                    <span className="link-hover-underline">sort: {sortOption.name}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeTrend}>
-                                    trend: {trendOption.name}
+                                    <span className="link-hover-underline">trend: {trendOption.name}</span>
                                 </div>
                             </div>
                         </div>

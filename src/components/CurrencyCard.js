@@ -7,9 +7,9 @@ class CurrencyCard extends React.Component {
         const trendClass = trend > 0 ? 'green-trend' : 'red-trend';
 
         return(
-            <div className="currency-card" style={ style }>
-                <div className="currency-code">
-                    <span className="currency-selector">{ selected && "▸" }</span> <a href="#" onClick={onClickCurrency}>{name}</a>
+            <div onClick={onClickCurrency} className={"currency-card link-hover"+(selected ? " card-selected" : "")} style={ style }>
+                <div className="currency-code link-hover-underline">
+                    <span className="currency-selector">{ selected && "▸ " }</span>{name}
                 </div>
                 <div className={"currency-price"}>
                    {priceFormatted}

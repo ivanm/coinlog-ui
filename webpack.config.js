@@ -17,6 +17,16 @@ module.exports = {
                 use: {
                     loader: "babel-loader"
                 }
+            },
+            {
+                type: 'javascript/auto',
+                test: /manifest\.json$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: 'manifest.json',
+                    }
+                }
             }
         ]
     },
