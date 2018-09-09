@@ -11,7 +11,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','ETC'],
+            currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','XLM','VEN','LTC','XMR','DASH'],
             fiatCurrency: 'USD',
             orderOptions: [
                 {id: 'price', name: 'price'},
@@ -154,14 +154,6 @@ class App extends React.Component {
         return(
             <div className="container">
                 <div className="left-pane">
-                    <div className="multi-card-container-3f">
-                        <div className="card">
-                        </div>
-                        <div className="card">
-                        </div>
-                        <div className="card">
-                        </div>
-                    </div>
                     <div className="multi-card-container grid-1fr-1fr">
                         <div className="card">
                             <div className="card-wrapper">
@@ -201,6 +193,7 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className="overflow-wrapper">
                     {
                         (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
                             <CurrencyCard {...o}
@@ -211,6 +204,7 @@ class App extends React.Component {
                             />
                         )
                     }
+                    </div>
                     <div className={`modal ${(showOptions? 'active': '')}`}>
                         <div className="multi-card-container grid-1fr-1fr">
                             <div className="card">

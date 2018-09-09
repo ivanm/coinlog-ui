@@ -29,6 +29,9 @@
         .left-pane {
             background-color: #232527;
             position: relative;
+            display: grid;
+            grid-template-rows: 39px 44px 1fr;
+            height: 100vh;
         }
         .left-pane .modal {
             position: absolute !important;
@@ -48,11 +51,12 @@
         }
         .main-pane {
             background-color: #161719;
-            height: 100%;
+            height: 100vh;
             display: flex;
             justify-content: center;
             box-sizing: border-box;
             align-items: center;
+            overflow: hidden;
         }
         .nav-title {
             border: 1px solid #161719;
@@ -146,6 +150,9 @@
         }
         .currency-selector {
             color: #a5a566
+        }
+        .overflow-wrapper {
+            overflow: auto;
         }
         @media only screen and (max-width: 600px) {
             .container {
