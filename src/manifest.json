@@ -1,10 +1,10 @@
 {
-  "name": "coinlog.sh",
-  "short_name": "coinlog.sh",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
-  "display": "fullscreen",
-  "orientation": "portrait",
-  "scope": "/",
-  "start_url": "/"
+    "name": "coinlog.sh",
+    "short_name": "coinlog.sh",
+    "theme_color": "#000000",
+    "background_color": "#000000",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "start_url": "/"
 }
