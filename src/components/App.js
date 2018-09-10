@@ -99,6 +99,10 @@ class App extends React.Component {
         this.setState({ selectedCurrency: (this.state.selectedCurrency != selectedCurrency) ? selectedCurrency : null });
     }
 
+    _logoClick = () => {
+        this.setState({ selectedCurrency: null });
+    }
+
     render() {
 
         const { data } = this.props;
@@ -150,9 +154,9 @@ class App extends React.Component {
         const dataGraph = data.historic24[selectedCurrency] ? [{
             x: data.historic24[selectedCurrency].date,
             close: data.historic24[selectedCurrency].close,
-            decreasing: {line: {color: '#af4d4d', width:0}},
+            decreasing: {line: {color: '#af4d4d', width:1}},
             high: data.historic24[selectedCurrency].high,
-            increasing: {line: {color: '#5ea35e', width: 0}},
+            increasing: {line: {color: '#5ea35e', width: 1}},
             line: {color: 'red'},
             low: data.historic24[selectedCurrency].low,
             open: data.historic24[selectedCurrency].open,
@@ -169,7 +173,7 @@ class App extends React.Component {
                         <div className="card card-arrow-container">
                             <div className="card-wrapper card-arrow-block">
                                 <div className="card-content link-hover">
-                                    <span className="menu-link" onClick={ this._toggleOptions }>☰ </span>| coinlog<span className="title-dot">.</span>sh
+                                    <span className="menu-link" onClick={ this._toggleOptions }>☰ </span>| <span onClick={ this._logoClick } className="link-hover-underline">coinlog<span className="title-dot">.</span>sh</span>
                                 </div>
                             </div>
                             <div className="card-arrow-head">
@@ -180,21 +184,21 @@ class App extends React.Component {
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeOrder}>
-                                    <span className="link-hover-underline">order: {orderOption.name}</span>
+                                    <span className="link-hover-underline">order<span className="title-dot">: </span>{orderOption.name}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeSort}>
-                                    <span className="link-hover-underline">sort: {sortOption.name}</span>
+                                    <span className="link-hover-underline">sort<span className="title-dot">: </span>{sortOption.name}</span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeTrend}>
-                                    <span className="link-hover-underline">trend: {trendOption.name}</span>
+                                    <span className="link-hover-underline">trend<span className="title-dot">: </span>{trendOption.name}</span>
                                 </div>
                             </div>
                         </div>
@@ -203,14 +207,14 @@ class App extends React.Component {
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                    <a href="#" onClick={ this._toggleOptions }>search:</a>
+                                    <a href="#" onClick={ this._toggleOptions }>search...</a>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                   view: cards
+                                    view<span className="title-dot">:</span> cards
                                 </div>
                             </div>
                         </div>
