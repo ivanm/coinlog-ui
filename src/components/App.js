@@ -166,11 +166,14 @@ class App extends React.Component {
             hoverlabel: { bgcolor: '#2a2b2d', font: { family: 'monospace', color: '#bfc4cc' } }
         }] : [];
 
-        const mobileView = viewPortWidth < 600;
+        const mobileView = viewPortWidth < 600,
+            mobileCompactView = false,
+            hidingOnMobile = (mobileView && selectedCurrency && mobileCompactView);
+
 
         return(
             <div className="container" style={{ height: viewPortHeight }}>
-                <div className="left-pane" style={ (mobileView && selectedCurrency) ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
+                <div className="left-pane" style={ hidingOnMobile ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
                     <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '1fr'}}>
                         <div className="card card-arrow-container">
                             <div className="card-wrapper card-arrow-block">
@@ -182,7 +185,7 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className={"multi-card-container grid-1fr"+((mobileView && selectedCurrency) ? ' hidden-container' : '')}>
+                    <div className={"multi-card-container grid-1fr"+(hidingOnMobile ? ' hidden-container' : '')}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeSort}>
@@ -191,7 +194,7 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className={"multi-card-container grid-1fr-1fr-1fr"+((mobileView && selectedCurrency) ? ' hidden-container' : '')}>
+                    <div className={"multi-card-container grid-1fr-1fr-1fr"+(hidingOnMobile ? ' hidden-container' : '')}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeOrder}>
