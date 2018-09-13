@@ -61,7 +61,7 @@ class App extends React.Component {
     }
 
     _resize = () => {
-        this.setState({ viewPortHeight: window.innerHeight });
+        this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
     }
 
     _changeOrder = () => {
@@ -106,7 +106,7 @@ class App extends React.Component {
     render() {
 
         const { data } = this.props;
-        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency, viewPortHeight} = this.state;
+        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency, viewPortHeight, viewPortWidth} = this.state;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
@@ -166,21 +166,32 @@ class App extends React.Component {
             hoverlabel: { bgcolor: '#2a2b2d', font: { family: 'monospace', color: '#bfc4cc' } }
         }] : [];
 
+        const mobileView = viewPortWidth < 600;
+
         return(
             <div className="container" style={{ height: viewPortHeight }}>
-                <div className="left-pane">
+                <div className="left-pane" style={ (mobileView && selectedCurrency) ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
                     <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '1fr'}}>
                         <div className="card card-arrow-container">
                             <div className="card-wrapper card-arrow-block">
                                 <div className="card-content link-hover">
-                                    <span className="menu-link" onClick={ this._toggleOptions }>☰ </span>| <span onClick={ this._logoClick } className="link-hover-underline">coinlog<span className="title-dot">.</span>sh</span>
+                                    <span className="menu-link" onClick={ this._toggleOptions }>☰ </span>| <span onClick={ this._logoClick } className="link-hover-underline"> { !selectedCurrency ?  (<span>coinlog<span className="title-dot">.</span>sh</span>): (<span>back</span>) } </span>
                                 </div>
                             </div>
                             <div className="card-arrow-head">
                             </div>
                         </div>
                     </div>
-                    <div className="multi-card-container grid-1fr-1fr-1fr">
+                    <div className={"multi-card-container grid-1fr"+((mobileView && selectedCurrency) ? ' hidden-container' : '')}>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content link-hover" onClick={this._changeSort}>
+                                    search...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={"multi-card-container grid-1fr-1fr-1fr"+((mobileView && selectedCurrency) ? ' hidden-container' : '')}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeOrder}>
@@ -197,41 +208,58 @@ class App extends React.Component {
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content link-hover" onClick={this._changeTrend}>
-                                    <span className="link-hover-underline">trend<span className="title-dot">: </span>{trendOption.name}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="multi-card-container" style={{ gridTemplateColumns: '1fr 200px' }}>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">
-                                    <a href="#" onClick={ this._toggleOptions }>search...</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
                                 <div className="card-content">
                                     view<span className="title-dot">:</span> cards
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="overflow-wrapper">
-                    {
-                        (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
-                            <CurrencyCard {...o}
-                                style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
-                                fiatCurrency={ fiatCurrency }
-                                key={ index }
-                                onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
-                                selected={ (selectedCurrency == o.name) }
-                            />
-                        )
-                    }
+                    <div className="multi-card-container" style={{ gridTemplateColumns: '1fr 2fr'}}>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content link-hover" onClick={this._changeTrend}>
+                                    <span className="link-hover-underline">trend<span className="title-dot">: </span>{trendOption.name}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <div className="card-wrapper">
+                                <div className="card-content">
+                                    api<span className="title-dot">:</span> cryptocompare
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    {
+                        (mobileView && selectedCurrency) ?
+                        <div className="main-pane-mobile">
+                            <div className="main-pane-wrapper">
+                                <div className="main-content">
+                                    <div className="big-chart">
+                                        { selectedCurrency &&
+                                            <Plot
+                                                data= { dataGraph }
+                                                layout={ layoutGraph }
+                                            />
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div> :
+                        <div className="overflow-wrapper" style={ (mobileView && selectedCurrency)? { opacity: 0, height: 0} : {} }>
+                            {
+                                (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
+                                <CurrencyCard {...o}
+                                    style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
+                                    fiatCurrency={ fiatCurrency }
+                                    key={ index }
+                                    onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
+                                    selected={ (selectedCurrency == o.name) }
+                                />
+                                )
+                            }
+                        </div>
+                    }
                     <div className={`modal ${(showOptions? 'active': '')}`}>
                         <div className="multi-card-container" style={{ gridTemplateColumns: '50px 1fr 1fr'}}>
                             <div className="card">
