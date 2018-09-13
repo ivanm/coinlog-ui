@@ -167,7 +167,7 @@ class App extends React.Component {
         }] : [];
 
         const mobileView = viewPortWidth < 600,
-            mobileCompactView = false,
+            mobileCompactView = true,
             hidingOnMobile = (mobileView && selectedCurrency && mobileCompactView);
 
 
