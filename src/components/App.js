@@ -53,7 +53,14 @@ class App extends React.Component {
         const { currencies, fiatCurrency} = this.state;
         this._resize();
         window.addEventListener("resize", this._resize.bind(this));
+        window.addEventListener('load', () => {
+            window.history.pushState({}, '')
+        });
+        window.addEventListener('popstate', () => {
+            window.history.pushState({}, '')
+        });
         this.props.dataActions.fetchCryptocompare(currencies, fiatCurrency);
+
     }
 
     componentWillUnmount() {
