@@ -2,7 +2,7 @@ import * as dataActions from '../actions/dataActions';
 import ls from 'localstorage';
 import * as types from '../types'
 
-const refreshLimit = 3600;
+const refreshLimit = 300;
 
 export default store => next => action => {
     const cache = new ls('');
