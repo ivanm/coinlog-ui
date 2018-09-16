@@ -1,7 +1,7 @@
 const initialState = {
     data: {
+        currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','XLM','VEN','LTC','XMR','DASH'],
         loading: false,
-        currencies: [],
         historic24: {}
     }
 };

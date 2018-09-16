@@ -1,32 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import * as types from '../types'
 
-export const fetchCryptocompare = (currencies, fiatCurrency) => {
-
-    const currenciesQuery = currencies.join(',');
-
-    return ({
-        [RSAA]: {
-            types: [
-                {
-                    type: types.FETCH_CRYPTOCOMPARE_REQUEST,
-                    meta: { fiatCurrency }
-                },
-                {
-                    type: types.FETCH_CRYPTOCOMPARE_SUCCESS,
-                    meta: { fiatCurrency }
-                },
-                {
-                    type: types.FETCH_CRYPTOCOMPARE_FAILURE,
-                    meta: { fiatCurrency }
-                }
-            ],
-            endpoint: 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms='+currenciesQuery+'&tsyms='+fiatCurrency,
-            method: 'GET'
-        }
-    })
-}
-
 export const fetch24ByCurrency = (currency, fiatCurrency) => {
     return ({
         [RSAA]: {
@@ -50,6 +24,23 @@ export const fetch24ByCurrency = (currency, fiatCurrency) => {
     })
 }
 
+export const fetch24ByCurrencyCached = (currency, fiatCurrency,cachedData) => {
+    return {
+        type: types.FETCH_24_CURRENCY_GET_CACHE,
+        currency,
+        fiatCurrency,
+        cachedData
+    }
+}
+
+export const fetch24ByCurrencyTry = (currency, fiatCurrency, trend) => {
+    return {
+        type: types.FETCH_24_CURRENCY_TRY,
+        currency,
+        fiatCurrency,
+        trend
+    }
+}
 
 export const orderCurrencies = (order, sort) => {
     return {

@@ -3,7 +3,7 @@ import React from "react";
 class CurrencyCard extends React.Component {
 
     render() {
-        const { name, trendFormatted, trend, priceFormatted, fiatCurrency, onClickCurrency, selected, style } = this.props;
+        const { name, trendFormatted, trend, priceFormatted, fiatCurrency, onClickCurrency, selected, style, testVal } = this.props;
         const trendClass = trend > 0 ? 'green-trend' : 'red-trend';
 
         return(

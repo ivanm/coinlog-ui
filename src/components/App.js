@@ -5,13 +5,13 @@ import CurrencyCard from './CurrencyCard';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dataActions from '../redux/actions/dataActions';
+import { changePercentage } from '../helpers';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currencies: ['BTC','ETH','NANO','EOS','XRP','BCH','XLM','VEN','LTC','XMR','DASH'],
             fiatCurrency: 'USD',
             orderOptions: [
                 {id: 'price', name: 'price'},
@@ -44,13 +44,10 @@ class App extends React.Component {
         ) {
             this.props.dataActions.orderCurrencies(this.state.order, this.state.sort);
         }
-        if (this.state.selectedCurrency && prevState.selectedCurrency != this.state.selectedCurrency) {
-            this.props.dataActions.fetch24ByCurrency(this.state.selectedCurrency, this.state.fiatCurrency);
-        }
     }
 
     componentDidMount() {
-        const { currencies, fiatCurrency} = this.state;
+        const { fiatCurrency} = this.state;
         this._resize();
         window.addEventListener("resize", this._resize.bind(this));
         window.addEventListener('load', () => {
@@ -59,8 +56,7 @@ class App extends React.Component {
         window.addEventListener('popstate', () => {
             window.history.pushState({}, '')
         });
-        this.props.dataActions.fetchCryptocompare(currencies, fiatCurrency);
-
+        Promise.all(this.props.data.currencies.map(el => this.props.dataActions.fetch24ByCurrencyTry(el, this.state.fiatCurrency, this.state.trend)));
     }
 
     componentWillUnmount() {
@@ -177,16 +173,15 @@ class App extends React.Component {
             mobileCompactView = true,
             hidingOnMobile = (mobileView && selectedCurrency && mobileCompactView);
 
-
         return(
             <div className="container" style={{ height: viewPortHeight }}>
                 <div className="left-pane" style={ hidingOnMobile ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
                     <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '40px 1fr'}}>
-                        <div class="card card-arrow-color">
-                            <div class="card-wrapper">
+                        <div className="card card-arrow-color">
+                            <div className="card-wrapper">
                                 { !selectedCurrency ?
-                                    <div class="card-content link-hover" onClick={ this._toggleOptions }> ☰  </div> :
-                                    <div class="card-content link-hover" onClick={ this._logoClick }> ⬅ </div>
+                                    <div className="card-content link-hover" onClick={ this._toggleOptions }> ☰  </div> :
+                                    <div className="card-content link-hover" onClick={ this._logoClick }> ⬅ </div>
                                 }
                             </div>
                         </div>
@@ -266,15 +261,19 @@ class App extends React.Component {
                         </div> :
                         <div className="overflow-wrapper" style={ (mobileView && selectedCurrency)? { opacity: 0, height: 0} : {} }>
                             {
-                                (data.currencies && data.currencies.length > 0) && data.currencies.map( (o, index) =>
-                                <CurrencyCard {...o}
-                                    style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
-                                    fiatCurrency={ fiatCurrency }
-                                    key={ index }
-                                    onClickCurrency={ e => this._handleCurrencyClick(e, o.name) }
-                                    selected={ (selectedCurrency == o.name) }
-                                />
-                                )
+                                data.currencies.map( (currency, index) => {
+                                    return(
+                                        data.historic24[currency] &&
+                                        <CurrencyCard {...data.historic24[currency]}
+                                            name={currency}
+                                            style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
+                                            fiatCurrency={ fiatCurrency }
+                                            key={ index }
+                                            onClickCurrency={ e => this._handleCurrencyClick(e, currency) }
+                                            selected={ (selectedCurrency == currency) }
+                                        />
+                                    )
+                                })
                             }
                         </div>
                     }
