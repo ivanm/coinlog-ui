@@ -181,11 +181,19 @@ class App extends React.Component {
         return(
             <div className="container" style={{ height: viewPortHeight }}>
                 <div className="left-pane" style={ hidingOnMobile ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
-                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '1fr'}}>
+                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '40px 1fr'}}>
+                        <div class="card card-arrow-color">
+                            <div class="card-wrapper">
+                                { !selectedCurrency ?
+                                    <div class="card-content link-hover" onClick={ this._toggleOptions }> ☰  </div> :
+                                    <div class="card-content link-hover" onClick={ this._logoClick }> ⬅ </div>
+                                }
+                            </div>
+                        </div>
                         <div className="card card-arrow-container">
                             <div className="card-wrapper card-arrow-block">
                                 <div className="card-content link-hover">
-                                    <span className="menu-link" onClick={ this._toggleOptions }>☰ </span>| <span onClick={ this._logoClick } className="link-hover-underline"> { !selectedCurrency ?  (<span>coinlog<span className="title-dot">.</span>sh</span>): (<span>back</span>) } </span>
+                                    <span onClick={ this._logoClick } className=""><span>coinlog<span className="title-dot">.</span>sh</span></span>
                                 </div>
                             </div>
                             <div className="card-arrow-head">
