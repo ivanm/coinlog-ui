@@ -23,9 +23,10 @@ class App extends React.Component {
                 {id: 'desc', name: '▲'}
             ],
             trendOptions: [
-                {id: '24h', name: '24h'},
                 {id: '1h', name: '1h'},
-                {id: '7d', name: '7d'}
+                {id: '24h', name: '24h'},
+                {id: '7d', name: '7d'},
+                {id: '30d', name: '30d'}
             ],
             order: 'trend',
             sort: 'desc',
@@ -42,7 +43,16 @@ class App extends React.Component {
             prevState.trend != this.state.trend ||
             JSON.stringify(prevProps.data) != JSON.stringify(this.props.data)
         ) {
-            this.props.dataActions.orderCurrencies(this.state.order, this.state.sort);
+            this.props.dataActions.orderCurrencies(this.state.order, this.state.sort, this.state.trend);
+        }
+        if (
+            prevState.trend != this.state.trend
+        ) {
+            Promise.all(
+                this.props.data.currencies.map(el =>
+                    this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
+                )
+            );
         }
     }
 
@@ -56,7 +66,11 @@ class App extends React.Component {
         window.addEventListener('popstate', () => {
             window.history.pushState({}, '')
         });
-        Promise.all(this.props.data.currencies.map(el => this.props.dataActions.fetch24ByCurrencyTry(el, this.state.fiatCurrency, this.state.trend)));
+        Promise.all(
+            this.props.data.currencies.map(el =>
+                this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
+            )
+        );
     }
 
     componentWillUnmount() {
@@ -108,14 +122,16 @@ class App extends React.Component {
 
     render() {
 
+
         const { data } = this.props;
         const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency, viewPortHeight, viewPortWidth} = this.state;
+        const historicKey = `historic${trend}`;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
 
-        const rangeDates = data.historic24[selectedCurrency] ?
-                    [ data.historic24[selectedCurrency].date[0], data.historic24[selectedCurrency].date[data.historic24[selectedCurrency].date.length] ] : [];
+        const rangeDates = data[historicKey][selectedCurrency] ?
+                    [ data[historicKey][selectedCurrency].date[0], data[historicKey][selectedCurrency].date[data[historicKey][selectedCurrency].date.length] ] : [];
 
         const layoutGraph = {
             width: '400',
@@ -154,15 +170,15 @@ class App extends React.Component {
             plot_bgcolor: 'rgba(0,0,0,0)'
         };
 
-        const dataGraph = data.historic24[selectedCurrency] ? [{
-            x: data.historic24[selectedCurrency].date,
-            close: data.historic24[selectedCurrency].close,
+        const dataGraph = data[historicKey][selectedCurrency] ? [{
+            x: data[historicKey][selectedCurrency].date,
+            close: data[historicKey][selectedCurrency].close,
             decreasing: {line: {color: '#af4d4d', width:1}},
-            high: data.historic24[selectedCurrency].high,
+            high: data[historicKey][selectedCurrency].high,
             increasing: {line: {color: '#5ea35e', width: 1}},
             line: {color: 'red'},
-            low: data.historic24[selectedCurrency].low,
-            open: data.historic24[selectedCurrency].open,
+            low: data[historicKey][selectedCurrency].low,
+            open: data[historicKey][selectedCurrency].open,
             type: 'candlestick',
             xaxis: 'x',
             yaxis: 'y',
@@ -263,8 +279,8 @@ class App extends React.Component {
                             {
                                 data.currencies.map( (currency, index) => {
                                     return(
-                                        data.historic24[currency] &&
-                                        <CurrencyCard {...data.historic24[currency]}
+                                        data[historicKey][currency] &&
+                                        <CurrencyCard {...data[historicKey][currency]}
                                             name={currency}
                                             style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
                                             fiatCurrency={ fiatCurrency }

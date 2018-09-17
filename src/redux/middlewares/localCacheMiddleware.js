@@ -6,16 +6,16 @@ const refreshLimit = 300;
 
 export default store => next => action => {
     const cache = new ls('');
-    if (action.type == types.FETCH_24_CURRENCY_TRY) {
+    if (action.type == types.REFRESH_CURRENCY) {
         const cacheKey = action.trend+'-'+action.currency+'-'+action.fiatCurrency;
         const state = store.getState();
         let [err, cachedData] = cache.get(cacheKey);
         if (cachedData && (cachedData.lastUpdated > (Math.floor(Date.now()/1000) - refreshLimit))) {
-            store.dispatch(dataActions.fetch24ByCurrencyCached(action.currency, action.fiatCurrency, cachedData));
+            store.dispatch(dataActions.getCachedCurrency(action.currency, action.fiatCurrency, action.trend, cachedData));
         } else {
-            store.dispatch(dataActions.fetch24ByCurrency(action.currency, action.fiatCurrency)).then(r => {
+            store.dispatch(dataActions.fetchCurrency(action.currency, action.fiatCurrency, action.trend)).then(r => {
                 const storedData = store.getState();
-                cachedData = storedData.data.historic24[action.currency];
+                cachedData = storedData.data[`historic${action.trend}`][action.currency];
                 cachedData.lastUpdated = Math.floor(Date.now()/1000);
                 cache.put(cacheKey, cachedData);
             });
