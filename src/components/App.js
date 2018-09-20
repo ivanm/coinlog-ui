@@ -1,39 +1,51 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Plot from 'react-plotly.js';
 import CurrencyCard from './CurrencyCard';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as dataActions from '../redux/actions/dataActions';
-import { changePercentage } from '../helpers';
 
-class App extends React.Component {
+class App extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            fiatCurrency: 'USD',
-            orderOptions: [
-                {id: 'price', name: 'price'},
-                {id: 'trend', name: 'trend'},
-                {id: 'name', name: 'name'}
-            ],
-            sortOptions: [
-                {id: 'asc', name: '▼'},
-                {id: 'desc', name: '▲'}
-            ],
-            trendOptions: [
-                {id: '1h', name: '1h'},
-                {id: '24h', name: '24h'},
-                {id: '7d', name: '7d'},
-                {id: '30d', name: '30d'}
-            ],
-            order: 'trend',
-            sort: 'desc',
-            trend: '24h',
-            showOptions: false,
-            selectedCurrency : null
-        }
+    state = {
+        fiatCurrency: 'USD',
+        orderOptions: [
+            {id: 'price', name: 'price'},
+            {id: 'trend', name: 'trend'},
+            {id: 'name', name: 'name'}
+        ],
+        sortOptions: [
+            {id: 'asc', name: '▼'},
+            {id: 'desc', name: '▲'}
+        ],
+        trendOptions: [
+            {id: '1h', name: '1h'},
+            {id: '24h', name: '24h'},
+            {id: '7d', name: '7d'},
+            {id: '30d', name: '30d'}
+        ],
+        order: 'trend',
+        sort: 'desc',
+        trend: '24h',
+        showOptions: false,
+        selectedCurrency: null
+    };
+
+    componentDidMount() {
+        this._resize();
+        window.addEventListener('resize', this._resize.bind(this));
+        window.addEventListener('load', () => {
+            window.history.pushState({}, '')
+        });
+        window.addEventListener('popstate', () => {
+            window.history.pushState({}, '')
+        });
+        Promise.all(
+            this.props.data.currencies.map(el =>
+                this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
+            )
+        );
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -56,69 +68,52 @@ class App extends React.Component {
         }
     }
 
-    componentDidMount() {
-        const { fiatCurrency} = this.state;
-        this._resize();
-        window.addEventListener("resize", this._resize.bind(this));
-        window.addEventListener('load', () => {
-            window.history.pushState({}, '')
-        });
-        window.addEventListener('popstate', () => {
-            window.history.pushState({}, '')
-        });
-        Promise.all(
-            this.props.data.currencies.map(el =>
-                this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
-            )
-        );
-    }
-
     componentWillUnmount() {
-        window.removeEventListener("resize", this._resize.bind(this));
+        window.removeEventListener('resize', this._resize.bind(this));
     }
 
     _resize = () => {
         this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
-    }
+    };
 
     _changeOrder = () => {
         const { orderOptions, order } = this.state,
             orderIndex = orderOptions.findIndex((el) => el.id == order);
 
         this.setState({
-            order: orderOptions[(orderIndex == (orderOptions.length-1) ? 0 : orderIndex+1)].id
+            order: orderOptions[(orderIndex == (orderOptions.length - 1) ? 0 : orderIndex + 1)].id
         });
-    }
+    };
 
     _changeSort = () => {
         const { sortOptions, sort } = this.state,
             sortIndex = sortOptions.findIndex((el) => el.id == sort);
 
         this.setState({
-            sort: sortOptions[(sortIndex == (sortOptions.length-1) ? 0 : sortIndex+1)].id
+            sort: sortOptions[(sortIndex == (sortOptions.length - 1) ? 0 : sortIndex + 1)].id
         });
-    }
+    };
 
     _changeTrend = () => {
         const { trendOptions, trend } = this.state,
             trendIndex = trendOptions.findIndex((el) => el.id == trend);
 
         this.setState({
-            trend: trendOptions[(trendIndex == (trendOptions.length-1) ? 0 : trendIndex+1)].id
+            trend: trendOptions[(trendIndex == (trendOptions.length - 1) ? 0 : trendIndex + 1)].id
         });
-    }
+    };
 
     _toggleOptions = () => {
         this.setState({ showOptions: !this.state.showOptions });
-    }
+    };
 
     _handleCurrencyClick = (e, selectedCurrency) => {
         this.setState({ selectedCurrency: (this.state.selectedCurrency != selectedCurrency) ? selectedCurrency : null });
-    }
+    };
 
     _logoClick = () => {
         this.setState({ selectedCurrency: null });
-    }
+    };
 
     render() {
 
@@ -131,7 +126,7 @@ class App extends React.Component {
             trendOption = trendOptions.find(el => el.id == trend);
 
         const rangeDates = data[historicKey][selectedCurrency] ?
-                    [ data[historicKey][selectedCurrency].date[0], data[historicKey][selectedCurrency].date[data[historicKey][selectedCurrency].date.length] ] : [];
+            [data[historicKey][selectedCurrency].date[0], data[historicKey][selectedCurrency].date[data[historicKey][selectedCurrency].date.length]] : [];
 
         const layoutGraph = {
             width: '400',
@@ -173,7 +168,7 @@ class App extends React.Component {
         const dataGraph = data[historicKey][selectedCurrency] ? [{
             x: data[historicKey][selectedCurrency].date,
             close: data[historicKey][selectedCurrency].close,
-            decreasing: {line: {color: '#af4d4d', width:1}},
+            decreasing: {line: {color: '#af4d4d', width: 1}},
             high: data[historicKey][selectedCurrency].high,
             increasing: {line: {color: '#5ea35e', width: 1}},
             line: {color: 'red'},
@@ -189,7 +184,7 @@ class App extends React.Component {
             mobileCompactView = true,
             hidingOnMobile = (mobileView && selectedCurrency && mobileCompactView);
 
-        return(
+        return (
             <div className="container" style={{ height: viewPortHeight }}>
                 <div className="left-pane" style={ hidingOnMobile ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
                     <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '40px 1fr'}}>
@@ -207,11 +202,10 @@ class App extends React.Component {
                                     <span onClick={ this._logoClick } className=""><span>coinlog<span className="title-dot">.</span>sh</span></span>
                                 </div>
                             </div>
-                            <div className="card-arrow-head">
-                            </div>
+                            <div className="card-arrow-head" />
                         </div>
                     </div>
-                    <div className={"multi-card-container grid-1fr"+(hidingOnMobile ? ' hidden-container' : '')}>
+                    <div className={'multi-card-container grid-1fr' + (hidingOnMobile ? ' hidden-container' : '')}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeSort}>
@@ -220,7 +214,7 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className={"multi-card-container grid-1fr-1fr-1fr"+(hidingOnMobile ? ' hidden-container' : '')}>
+                    <div className={'multi-card-container grid-1fr-1fr-1fr' + (hidingOnMobile ? ' hidden-container' : '')}>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content link-hover" onClick={this._changeOrder}>
@@ -261,39 +255,39 @@ class App extends React.Component {
                     </div>
                     {
                         (mobileView && selectedCurrency) ?
-                        <div className="main-pane-mobile">
-                            <div className="main-pane-wrapper">
-                                <div className="main-content">
-                                    <div className="big-chart">
-                                        { selectedCurrency &&
+                            <div className="main-pane-mobile">
+                                <div className="main-pane-wrapper">
+                                    <div className="main-content">
+                                        <div className="big-chart">
+                                            { selectedCurrency &&
                                             <Plot
                                                 data= { dataGraph }
                                                 layout={ layoutGraph }
                                             />
-                                        }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div> :
-                        <div className="overflow-wrapper" style={ (mobileView && selectedCurrency)? { opacity: 0, height: 0} : {} }>
-                            {
-                                data.currencies.map( (currency, index) => {
-                                    return(
-                                        data[historicKey][currency] &&
+                            </div> :
+                            <div className="overflow-wrapper" style={ (mobileView && selectedCurrency) ? { opacity: 0, height: 0} : {} }>
+                                {
+                                    data.currencies.map((currency, index) => {
+                                        return (
+                                            data[historicKey][currency] &&
                                         <CurrencyCard {...data[historicKey][currency]}
                                             name={currency}
-                                            style={ (index == 0)? { margin: '0px 5px 5px 5px' } : undefined}
+                                            style={ (index == 0) ? { margin: '0px 5px 5px 5px' } : undefined}
                                             fiatCurrency={ fiatCurrency }
                                             key={ index }
                                             onClickCurrency={ e => this._handleCurrencyClick(e, currency) }
                                             selected={ (selectedCurrency == currency) }
                                         />
-                                    )
-                                })
-                            }
-                        </div>
+                                        )
+                                    })
+                                }
+                            </div>
                     }
-                    <div className={`modal ${(showOptions? 'active': '')}`}>
+                    <div className={`modal ${(showOptions ? 'active' : '')}`}>
                         <div className="multi-card-container" style={{ gridTemplateColumns: '50px 1fr 1fr'}}>
                             <div className="card">
                                 <div className="card-wrapper">
@@ -321,21 +315,21 @@ class App extends React.Component {
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a className="active-link"href='#' onClick={this._changeOrder}>api</a>
+                                        <a className="active-link"href="#" onClick={this._changeOrder}>api</a>
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href='#' onClick={this._changeSort}>display</a>
+                                        <a href="#" onClick={this._changeSort}>display</a>
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href='#' onClick={this._changeTrend}>about</a>
+                                        <a href="#" onClick={this._changeTrend}>about</a>
                                     </div>
                                 </div>
                             </div>
@@ -362,19 +356,10 @@ class App extends React.Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {
-        data: state.data
-    };
-}
+const mapStateToProps = ({ data }) => ({ data });
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        dataActions: bindActionCreators(dataActions, dispatch)
-    };
-}
+const mapDispatchToProps = (dispatch) => ({
+    dataActions: bindActionCreators(dataActions, dispatch)
+});
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App)

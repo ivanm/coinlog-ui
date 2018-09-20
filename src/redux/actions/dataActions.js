@@ -21,7 +21,7 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histominute?fsym='+currency+'&tsym='+fiatCurrency+'&limit=60',
+                    endpoint: 'https://min-api.cryptocompare.com/data/histominute?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=60',
                     method: 'GET'
                 }
             });
@@ -42,7 +42,7 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histohour?fsym='+currency+'&tsym='+fiatCurrency+'&limit=24',
+                    endpoint: 'https://min-api.cryptocompare.com/data/histohour?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=24',
                     method: 'GET'
                 }
             });
@@ -63,7 +63,7 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym='+currency+'&tsym='+fiatCurrency+'&limit=7',
+                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=7',
                     method: 'GET'
                 }
             });
@@ -84,7 +84,7 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym='+currency+'&tsym='+fiatCurrency+'&limit=30',
+                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=30',
                     method: 'GET'
                 }
             });
