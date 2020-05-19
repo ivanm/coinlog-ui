@@ -7,8 +7,8 @@ import configureStore from './redux/configureStore.js';
 let store = configureStore();
 
 ReactDOM.render(
-    <Provider  store={ store }>
-        <App/>
+    <Provider store={store}>
+        <App />
     </Provider>,
     document.getElementById('app')
 );

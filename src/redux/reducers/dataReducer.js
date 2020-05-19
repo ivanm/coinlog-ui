@@ -1,10 +1,9 @@
 import initialState from '../initialState';
-import * as types from '../types'
+import * as types from '../types';
 import { changePercentage, latestPrice } from '../../helpers';
 
 const dataReducer = (state = initialState.data, action) => {
     switch (action.type) {
-
         case types.FETCH_1H_CURRENCY_REQUEST:
         case types.FETCH_24H_CURRENCY_REQUEST:
         case types.FETCH_7D_CURRENCY_REQUEST:
@@ -22,13 +21,15 @@ const dataReducer = (state = initialState.data, action) => {
             const { currency, trend } = action.meta;
             let historicKeySuccess = `historic${trend}`;
             let currencyData = {
-                date: action.payload.Data.map(el => (new Date(el.time * 1000)).toISOString()),
+                date: action.payload.Data.map(el =>
+                    new Date(el.time * 1000).toISOString()
+                ),
                 open: action.payload.Data.map(el => el.open),
                 close: action.payload.Data.map(el => el.close),
                 low: action.payload.Data.map(el => el.low),
                 high: action.payload.Data.map(el => el.high),
                 name: currency
-            }
+            };
 
             const trendNum = changePercentage(currencyData),
                 price = latestPrice(currencyData);
@@ -39,7 +40,7 @@ const dataReducer = (state = initialState.data, action) => {
                 trendFormatted: String(trendNum.toFixed(2)),
                 price,
                 priceFormatted: '$ ' + String(price.toFixed(2))
-            }
+            };
 
             return {
                 ...state,
@@ -76,14 +77,30 @@ const dataReducer = (state = initialState.data, action) => {
         }
 
         case types.ORDER_CURRENCIES: {
-            const { order, sort, trend} = action;
+            const { order, sort, trend } = action;
             let { currencies } = state;
             let historicKeyOrder = `historic${trend}`;
-            const ascOrder = (a, b) => { return isNaN(state[historicKeyOrder][a][order]) ? state[historicKeyOrder][a][order].localeCompare(state[historicKeyOrder][b][order]) : (state[historicKeyOrder][a][order] - state[historicKeyOrder][b][order]) },
-                descOrder = (a, b) => { return isNaN(state[historicKeyOrder][a][order]) ? state[historicKeyOrder][b][order].localeCompare(state[historicKeyOrder][a][order]) : (state[historicKeyOrder][b][order] - state[historicKeyOrder][a][order]) },
-                orderFunc = (sort == 'asc') ? ascOrder : descOrder;
+            const ascOrder = (a, b) => {
+                    return isNaN(state[historicKeyOrder][a][order])
+                        ? state[historicKeyOrder][a][order].localeCompare(
+                              state[historicKeyOrder][b][order]
+                          )
+                        : state[historicKeyOrder][a][order] -
+                              state[historicKeyOrder][b][order];
+                },
+                descOrder = (a, b) => {
+                    return isNaN(state[historicKeyOrder][a][order])
+                        ? state[historicKeyOrder][b][order].localeCompare(
+                              state[historicKeyOrder][a][order]
+                          )
+                        : state[historicKeyOrder][b][order] -
+                              state[historicKeyOrder][a][order];
+                },
+                orderFunc = sort == 'asc' ? ascOrder : descOrder;
 
-            if (Object.keys(state[historicKeyOrder]).length == currencies.length) {
+            if (
+                Object.keys(state[historicKeyOrder]).length == currencies.length
+            ) {
                 currencies = currencies.sort(orderFunc);
             }
             return {
@@ -96,6 +113,6 @@ const dataReducer = (state = initialState.data, action) => {
         default:
             return state;
     }
-}
+};
 
 export default dataReducer;

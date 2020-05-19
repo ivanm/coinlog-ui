@@ -1,11 +1,10 @@
 import { RSAA } from 'redux-api-middleware';
-import * as types from '../types'
+import * as types from '../types';
 
 export const fetchCurrency = (currency, fiatCurrency, trend) => {
-
     switch (trend) {
         case '1h':
-            return ({
+            return {
                 [RSAA]: {
                     types: [
                         {
@@ -21,12 +20,17 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histominute?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=60',
+                    endpoint:
+                        'https://min-api.cryptocompare.com/data/histominute?fsym=' +
+                        currency +
+                        '&tsym=' +
+                        fiatCurrency +
+                        '&limit=60',
                     method: 'GET'
                 }
-            });
+            };
         case '24h':
-            return ({
+            return {
                 [RSAA]: {
                     types: [
                         {
@@ -42,12 +46,17 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histohour?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=24',
+                    endpoint:
+                        'https://min-api.cryptocompare.com/data/histohour?fsym=' +
+                        currency +
+                        '&tsym=' +
+                        fiatCurrency +
+                        '&limit=24',
                     method: 'GET'
                 }
-            });
+            };
         case '7d':
-            return ({
+            return {
                 [RSAA]: {
                     types: [
                         {
@@ -63,12 +72,17 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=7',
+                    endpoint:
+                        'https://min-api.cryptocompare.com/data/histoday?fsym=' +
+                        currency +
+                        '&tsym=' +
+                        fiatCurrency +
+                        '&limit=7',
                     method: 'GET'
                 }
-            });
+            };
         case '30d':
-            return ({
+            return {
                 [RSAA]: {
                     types: [
                         {
@@ -84,14 +98,24 @@ export const fetchCurrency = (currency, fiatCurrency, trend) => {
                             meta: { currency, fiatCurrency, trend }
                         }
                     ],
-                    endpoint: 'https://min-api.cryptocompare.com/data/histoday?fsym=' + currency + '&tsym=' + fiatCurrency + '&limit=30',
+                    endpoint:
+                        'https://min-api.cryptocompare.com/data/histoday?fsym=' +
+                        currency +
+                        '&tsym=' +
+                        fiatCurrency +
+                        '&limit=30',
                     method: 'GET'
                 }
-            });
+            };
     }
-}
+};
 
-export const getCachedCurrency = (currency, fiatCurrency, trend, cachedData) => {
+export const getCachedCurrency = (
+    currency,
+    fiatCurrency,
+    trend,
+    cachedData
+) => {
     let type = '';
     switch (trend) {
         case '1h':
@@ -113,8 +137,8 @@ export const getCachedCurrency = (currency, fiatCurrency, trend, cachedData) => 
         fiatCurrency,
         trend,
         cachedData
-    }
-}
+    };
+};
 
 export const refreshCurrency = (currency, fiatCurrency, trend) => {
     return {
@@ -122,8 +146,8 @@ export const refreshCurrency = (currency, fiatCurrency, trend) => {
         currency,
         fiatCurrency,
         trend
-    }
-}
+    };
+};
 
 export const orderCurrencies = (order, sort, trend) => {
     return {
@@ -131,5 +155,5 @@ export const orderCurrencies = (order, sort, trend) => {
         order,
         sort,
         trend
-    }
-}
+    };
+};

@@ -7,23 +7,22 @@ import { bindActionCreators } from 'redux';
 import * as dataActions from '../redux/actions/dataActions';
 
 class App extends Component {
-
     state = {
         fiatCurrency: 'USD',
         orderOptions: [
-            {id: 'price', name: 'price'},
-            {id: 'trend', name: 'trend'},
-            {id: 'name', name: 'name'}
+            { id: 'price', name: 'price' },
+            { id: 'trend', name: 'trend' },
+            { id: 'name', name: 'name' }
         ],
         sortOptions: [
-            {id: 'asc', name: '▼'},
-            {id: 'desc', name: '▲'}
+            { id: 'asc', name: '▼' },
+            { id: 'desc', name: '▲' }
         ],
         trendOptions: [
-            {id: '1h', name: '1h'},
-            {id: '24h', name: '24h'},
-            {id: '7d', name: '7d'},
-            {id: '30d', name: '30d'}
+            { id: '1h', name: '1h' },
+            { id: '24h', name: '24h' },
+            { id: '7d', name: '7d' },
+            { id: '30d', name: '30d' }
         ],
         order: 'trend',
         sort: 'desc',
@@ -36,14 +35,18 @@ class App extends Component {
         this._resize();
         window.addEventListener('resize', this._resize.bind(this));
         window.addEventListener('load', () => {
-            window.history.pushState({}, '')
+            window.history.pushState({}, '');
         });
         window.addEventListener('popstate', () => {
-            window.history.pushState({}, '')
+            window.history.pushState({}, '');
         });
         Promise.all(
             this.props.data.currencies.map(el =>
-                this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
+                this.props.dataActions.refreshCurrency(
+                    el,
+                    this.state.fiatCurrency,
+                    this.state.trend
+                )
             )
         );
     }
@@ -55,14 +58,20 @@ class App extends Component {
             prevState.trend != this.state.trend ||
             JSON.stringify(prevProps.data) != JSON.stringify(this.props.data)
         ) {
-            this.props.dataActions.orderCurrencies(this.state.order, this.state.sort, this.state.trend);
+            this.props.dataActions.orderCurrencies(
+                this.state.order,
+                this.state.sort,
+                this.state.trend
+            );
         }
-        if (
-            prevState.trend != this.state.trend
-        ) {
+        if (prevState.trend != this.state.trend) {
             Promise.all(
                 this.props.data.currencies.map(el =>
-                    this.props.dataActions.refreshCurrency(el, this.state.fiatCurrency, this.state.trend)
+                    this.props.dataActions.refreshCurrency(
+                        el,
+                        this.state.fiatCurrency,
+                        this.state.trend
+                    )
                 )
             );
         }
@@ -73,33 +82,45 @@ class App extends Component {
     }
 
     _resize = () => {
-        this.setState({ viewPortHeight: window.innerHeight, viewPortWidth: window.innerWidth });
+        this.setState({
+            viewPortHeight: window.innerHeight,
+            viewPortWidth: window.innerWidth
+        });
     };
 
     _changeOrder = () => {
         const { orderOptions, order } = this.state,
-            orderIndex = orderOptions.findIndex((el) => el.id == order);
+            orderIndex = orderOptions.findIndex(el => el.id == order);
 
         this.setState({
-            order: orderOptions[(orderIndex == (orderOptions.length - 1) ? 0 : orderIndex + 1)].id
+            order:
+                orderOptions[
+                    orderIndex == orderOptions.length - 1 ? 0 : orderIndex + 1
+                ].id
         });
     };
 
     _changeSort = () => {
         const { sortOptions, sort } = this.state,
-            sortIndex = sortOptions.findIndex((el) => el.id == sort);
+            sortIndex = sortOptions.findIndex(el => el.id == sort);
 
         this.setState({
-            sort: sortOptions[(sortIndex == (sortOptions.length - 1) ? 0 : sortIndex + 1)].id
+            sort:
+                sortOptions[
+                    sortIndex == sortOptions.length - 1 ? 0 : sortIndex + 1
+                ].id
         });
     };
 
     _changeTrend = () => {
         const { trendOptions, trend } = this.state,
-            trendIndex = trendOptions.findIndex((el) => el.id == trend);
+            trendIndex = trendOptions.findIndex(el => el.id == trend);
 
         this.setState({
-            trend: trendOptions[(trendIndex == (trendOptions.length - 1) ? 0 : trendIndex + 1)].id
+            trend:
+                trendOptions[
+                    trendIndex == trendOptions.length - 1 ? 0 : trendIndex + 1
+                ].id
         });
     };
 
@@ -108,7 +129,12 @@ class App extends Component {
     };
 
     _handleCurrencyClick = (e, selectedCurrency) => {
-        this.setState({ selectedCurrency: (this.state.selectedCurrency != selectedCurrency) ? selectedCurrency : null });
+        this.setState({
+            selectedCurrency:
+                this.state.selectedCurrency != selectedCurrency
+                    ? selectedCurrency
+                    : null
+        });
     };
 
     _logoClick = () => {
@@ -116,17 +142,33 @@ class App extends Component {
     };
 
     render() {
-
-
         const { data } = this.props;
-        const { fiatCurrency, orderOptions, order, sortOptions, sort, trendOptions, trend, showOptions, selectedCurrency, viewPortHeight, viewPortWidth} = this.state;
+        const {
+            fiatCurrency,
+            orderOptions,
+            order,
+            sortOptions,
+            sort,
+            trendOptions,
+            trend,
+            showOptions,
+            selectedCurrency,
+            viewPortHeight,
+            viewPortWidth
+        } = this.state;
         const historicKey = `historic${trend}`;
         const orderOption = orderOptions.find(el => el.id == order),
             sortOption = sortOptions.find(el => el.id == sort),
             trendOption = trendOptions.find(el => el.id == trend);
 
-        const rangeDates = data[historicKey][selectedCurrency] ?
-            [data[historicKey][selectedCurrency].date[0], data[historicKey][selectedCurrency].date[data[historicKey][selectedCurrency].date.length]] : [];
+        const rangeDates = data[historicKey][selectedCurrency]
+            ? [
+                  data[historicKey][selectedCurrency].date[0],
+                  data[historicKey][selectedCurrency].date[
+                      data[historicKey][selectedCurrency].date.length
+                  ]
+              ]
+            : [];
 
         const layoutGraph = {
             width: '400',
@@ -165,148 +207,237 @@ class App extends Component {
             plot_bgcolor: 'rgba(0,0,0,0)'
         };
 
-        const dataGraph = data[historicKey][selectedCurrency] ? [{
-            x: data[historicKey][selectedCurrency].date,
-            close: data[historicKey][selectedCurrency].close,
-            decreasing: {line: {color: '#af4d4d', width: 1}},
-            high: data[historicKey][selectedCurrency].high,
-            increasing: {line: {color: '#5ea35e', width: 1}},
-            line: {color: 'red'},
-            low: data[historicKey][selectedCurrency].low,
-            open: data[historicKey][selectedCurrency].open,
-            type: 'candlestick',
-            xaxis: 'x',
-            yaxis: 'y',
-            hoverlabel: { bgcolor: '#2a2b2d', font: { family: 'monospace', color: '#bfc4cc' } }
-        }] : [];
+        const dataGraph = data[historicKey][selectedCurrency]
+            ? [
+                  {
+                      x: data[historicKey][selectedCurrency].date,
+                      close: data[historicKey][selectedCurrency].close,
+                      decreasing: { line: { color: '#af4d4d', width: 1 } },
+                      high: data[historicKey][selectedCurrency].high,
+                      increasing: { line: { color: '#5ea35e', width: 1 } },
+                      line: { color: 'red' },
+                      low: data[historicKey][selectedCurrency].low,
+                      open: data[historicKey][selectedCurrency].open,
+                      type: 'candlestick',
+                      xaxis: 'x',
+                      yaxis: 'y',
+                      hoverlabel: {
+                          bgcolor: '#2a2b2d',
+                          font: { family: 'monospace', color: '#bfc4cc' }
+                      }
+                  }
+              ]
+            : [];
 
         const mobileView = viewPortWidth < 600,
             mobileCompactView = true,
-            hidingOnMobile = (mobileView && selectedCurrency && mobileCompactView);
+            hidingOnMobile =
+                mobileView && selectedCurrency && mobileCompactView;
 
         return (
             <div className="container" style={{ height: viewPortHeight }}>
-                <div className="left-pane" style={ hidingOnMobile ? { gridTemplateRows: '40px 0px 0px 45px 1fr'} : {} }>
-                    <div className="multi-card-container grid-3fr-3fr-1fr-1fr" style={{ gridTemplateColumns: '40px 1fr'}}>
+                <div
+                    className="left-pane"
+                    style={
+                        hidingOnMobile
+                            ? { gridTemplateRows: '40px 0px 0px 45px 1fr' }
+                            : {}
+                    }>
+                    <div
+                        className="multi-card-container grid-3fr-3fr-1fr-1fr"
+                        style={{ gridTemplateColumns: '40px 1fr' }}>
                         <div className="card card-arrow-color">
                             <div className="card-wrapper">
-                                { !selectedCurrency ?
-                                    <div className="card-content link-hover" onClick={ this._toggleOptions }> ☰  </div> :
-                                    <div className="card-content link-hover" onClick={ this._logoClick }> ⬅ </div>
-                                }
+                                {!selectedCurrency ? (
+                                    <div
+                                        className="card-content link-hover"
+                                        onClick={this._toggleOptions}>
+                                        {' '}
+                                        ☰{' '}
+                                    </div>
+                                ) : (
+                                    <div
+                                        className="card-content link-hover"
+                                        onClick={this._logoClick}>
+                                        {' '}
+                                        ⬅{' '}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="card card-arrow-container">
                             <div className="card-wrapper card-arrow-block">
                                 <div className="card-content link-hover">
-                                    <span onClick={ this._logoClick } className=""><span>coinlog<span className="title-dot">.</span>sh</span></span>
+                                    <span
+                                        onClick={this._logoClick}
+                                        className="">
+                                        <span>
+                                            coinlog
+                                            <span className="title-dot">.</span>
+                                            sh
+                                        </span>
+                                    </span>
                                 </div>
                             </div>
                             <div className="card-arrow-head" />
                         </div>
                     </div>
-                    <div className={'multi-card-container grid-1fr' + (hidingOnMobile ? ' hidden-container' : '')}>
+                    <div
+                        className={
+                            'multi-card-container grid-1fr' +
+                            (hidingOnMobile ? ' hidden-container' : '')
+                        }>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content link-hover" onClick={this._changeSort}>
+                                <div
+                                    className="card-content link-hover"
+                                    onClick={this._changeSort}>
                                     search...
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className={'multi-card-container grid-1fr-1fr-1fr' + (hidingOnMobile ? ' hidden-container' : '')}>
+                    <div
+                        className={
+                            'multi-card-container grid-1fr-1fr-1fr' +
+                            (hidingOnMobile ? ' hidden-container' : '')
+                        }>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content link-hover" onClick={this._changeOrder}>
-                                    <span className="link-hover-underline">order<span className="title-dot">: </span>{orderOption.name}</span>
+                                <div
+                                    className="card-content link-hover"
+                                    onClick={this._changeOrder}>
+                                    <span className="link-hover-underline">
+                                        order
+                                        <span className="title-dot">: </span>
+                                        {orderOption.name}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content link-hover" onClick={this._changeSort}>
-                                    <span className="link-hover-underline">sort<span className="title-dot">: </span>{sortOption.name}</span>
+                                <div
+                                    className="card-content link-hover"
+                                    onClick={this._changeSort}>
+                                    <span className="link-hover-underline">
+                                        sort
+                                        <span className="title-dot">: </span>
+                                        {sortOption.name}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                    view<span className="title-dot">:</span> cards
+                                    view<span className="title-dot">:</span>{' '}
+                                    cards
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="multi-card-container" style={{ gridTemplateColumns: '1fr 2fr'}}>
+                    <div
+                        className="multi-card-container"
+                        style={{ gridTemplateColumns: '1fr 2fr' }}>
                         <div className="card">
                             <div className="card-wrapper">
-                                <div className="card-content link-hover" onClick={this._changeTrend}>
-                                    <span className="link-hover-underline">trend<span className="title-dot">: </span>{trendOption.name}</span>
+                                <div
+                                    className="card-content link-hover"
+                                    onClick={this._changeTrend}>
+                                    <span className="link-hover-underline">
+                                        trend
+                                        <span className="title-dot">: </span>
+                                        {trendOption.name}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-wrapper">
                                 <div className="card-content">
-                                    api<span className="title-dot">:</span> cryptocompare
+                                    api<span className="title-dot">:</span>{' '}
+                                    cryptocompare
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {
-                        (mobileView && selectedCurrency) ?
-                            <div className="main-pane-mobile">
-                                <div className="main-pane-wrapper">
-                                    <div className="main-content">
-                                        <div className="big-chart">
-                                            { selectedCurrency &&
+                    {mobileView && selectedCurrency ? (
+                        <div className="main-pane-mobile">
+                            <div className="main-pane-wrapper">
+                                <div className="main-content">
+                                    <div className="big-chart">
+                                        {selectedCurrency && (
                                             <Plot
-                                                data= { dataGraph }
-                                                layout={ layoutGraph }
+                                                data={dataGraph}
+                                                layout={layoutGraph}
                                             />
-                                            }
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
-                            </div> :
-                            <div className="overflow-wrapper" style={ (mobileView && selectedCurrency) ? { opacity: 0, height: 0} : {} }>
-                                {
-                                    data.currencies.map((currency, index) => {
-                                        return (
-                                            data[historicKey][currency] &&
-                                        <CurrencyCard {...data[historicKey][currency]}
-                                            name={currency}
-                                            style={ (index == 0) ? { margin: '0px 5px 5px 5px' } : undefined}
-                                            fiatCurrency={ fiatCurrency }
-                                            key={ index }
-                                            onClickCurrency={ e => this._handleCurrencyClick(e, currency) }
-                                            selected={ (selectedCurrency == currency) }
-                                        />
-                                        )
-                                    })
-                                }
                             </div>
-                    }
-                    <div className={`modal ${(showOptions ? 'active' : '')}`}>
-                        <div className="multi-card-container" style={{ gridTemplateColumns: '50px 1fr 1fr'}}>
+                        </div>
+                    ) : (
+                        <div
+                            className="overflow-wrapper"
+                            style={
+                                mobileView && selectedCurrency
+                                    ? { opacity: 0, height: 0 }
+                                    : {}
+                            }>
+                            {data.currencies.map((currency, index) => {
+                                return (
+                                    data[historicKey][currency] && (
+                                        <CurrencyCard
+                                            {...data[historicKey][currency]}
+                                            name={currency}
+                                            style={
+                                                index == 0
+                                                    ? {
+                                                          margin:
+                                                              '0px 5px 5px 5px'
+                                                      }
+                                                    : undefined
+                                            }
+                                            fiatCurrency={fiatCurrency}
+                                            key={index}
+                                            onClickCurrency={e =>
+                                                this._handleCurrencyClick(
+                                                    e,
+                                                    currency
+                                                )
+                                            }
+                                            selected={
+                                                selectedCurrency == currency
+                                            }
+                                        />
+                                    )
+                                );
+                            })}
+                        </div>
+                    )}
+                    <div className={`modal ${showOptions ? 'active' : ''}`}>
+                        <div
+                            className="multi-card-container"
+                            style={{ gridTemplateColumns: '50px 1fr 1fr' }}>
                             <div className="card">
                                 <div className="card-wrapper">
-                                    <div onClick={ this._toggleOptions } className="card-content link-hover">
+                                    <div
+                                        onClick={this._toggleOptions}
+                                        className="card-content link-hover">
                                         ⬅
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
-                                    <div className="card-content">
-                                        settings
-                                    </div>
+                                    <div className="card-content">settings</div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                       v: 0.1.0 alpha
+                                        v: 0.1.0 alpha
                                     </div>
                                 </div>
                             </div>
@@ -315,21 +446,30 @@ class App extends Component {
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a className="active-link"href="#" onClick={this._changeOrder}>api</a>
+                                        <a
+                                            className="active-link"
+                                            href="#"
+                                            onClick={this._changeOrder}>
+                                            api
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href="#" onClick={this._changeSort}>display</a>
+                                        <a href="#" onClick={this._changeSort}>
+                                            display
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                             <div className="card">
                                 <div className="card-wrapper">
                                     <div className="card-content">
-                                        <a href="#" onClick={this._changeTrend}>about</a>
+                                        <a href="#" onClick={this._changeTrend}>
+                                            about
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -340,26 +480,25 @@ class App extends Component {
                     <div className="main-pane-wrapper">
                         <div className="main-content">
                             <div className="big-chart">
-                                { selectedCurrency &&
+                                {selectedCurrency && (
                                     <Plot
-                                        data= { dataGraph }
-                                        layout={ layoutGraph }
+                                        data={dataGraph}
+                                        layout={layoutGraph}
                                     />
-                                }
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }
 
-
 const mapStateToProps = ({ data }) => ({ data });
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
     dataActions: bindActionCreators(dataActions, dispatch)
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, mapDispatchToProps)(App);
