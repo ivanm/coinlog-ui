@@ -11,7 +11,8 @@
     "build-prod": "webpack --mode production",
     "lint": "eslint webpack.config.js ./src --color",
     "lint-fix": "eslint webpack.config.js ./src --color --fix",
-    "prettier": "prettier 'src/**/*.{js,jsx,json,css,scss}' --write"
+    "prettier": "prettier 'src/**/*.{js,jsx,json,css,scss}' --write",
+    "server": "node server.js"
   },
   "dependencies": {
     "@babel/preset-stage-0": "^7.0.0",
@@ -30,6 +31,7 @@
     "plotly.js": "^1.40.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
+    "react-hot-loader": "^4.5.3",
     "react-plotly.js": "^2.2.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
