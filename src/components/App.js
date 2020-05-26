@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 import CurrencyCard from './CurrencyCard';
 
@@ -7,6 +8,11 @@ import { bindActionCreators } from 'redux';
 import * as dataActions from '../redux/actions/dataActions';
 
 class App extends Component {
+    static propTypes = {
+        data: PropTypes.object.isRequired,
+        dataActions: PropTypes.object.isRequired,
+    };
+
     state = {
         fiatCurrency: 'USD',
         orderOptions: [
@@ -84,7 +90,8 @@ class App extends Component {
     _resize = () => {
         this.setState({
             viewPortHeight: window.innerHeight,
-            viewPortWidth: window.innerWidth
+            viewPortWidth: window.innerWidth,
+            graphWidth: document.getElementById('data-viewport').offsetWidth - 40
         });
     };
 
@@ -154,7 +161,8 @@ class App extends Component {
             showOptions,
             selectedCurrency,
             viewPortHeight,
-            viewPortWidth
+            viewPortWidth,
+            graphWidth,
         } = this.state;
         const historicKey = `historic${trend}`;
         const orderOption = orderOptions.find(el => el.id == order),
@@ -171,13 +179,13 @@ class App extends Component {
             : [];
 
         const layoutGraph = {
-            width: '400',
+            width: graphWidth,
             dragmode: 'zoom',
             margin: {
                 r: 10,
                 t: 25,
                 b: 40,
-                l: 60
+                l: 30
             },
             font: {
                 family: 'monospace'
@@ -366,7 +374,9 @@ class App extends Component {
                         <div className="main-pane-mobile">
                             <div className="main-pane-wrapper">
                                 <div className="main-content">
-                                    <div className="big-chart">
+                                    <div
+                                        id="data-viewport"
+                                        className="big-chart">
                                         {selectedCurrency && (
                                             <Plot
                                                 data={dataGraph}
@@ -479,7 +489,7 @@ class App extends Component {
                 <div className="main-pane">
                     <div className="main-pane-wrapper">
                         <div className="main-content">
-                            <div className="big-chart">
+                            <div id="data-viewport" className="big-chart">
                                 {selectedCurrency && (
                                     <Plot
                                         data={dataGraph}
