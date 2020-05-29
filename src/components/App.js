@@ -36,8 +36,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     });
 
     const [graphWidth, setGraphWidth] = useState(null);
-    const [viewPortHeight, setViewPortHeight] = useState(null);
-    const [viewPortWidth, setViewPortWidth] = useState(null);
+    const [viewPortHeight, setViewPortHeight] = useState(window.innerHeight);
+    const [viewPortWidth, setViewPortWidth] = useState(window.innerWidth);
 
     const {
         fiatCurrency,
@@ -80,6 +80,10 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
             data.currencies.map(el => refreshCurrency(el, fiatCurrency, trend))
         );
     }, [trend]);
+
+    useEffect(() => {
+        resize()
+    }, [selectedCurrency]);
 
     const resize = () => {
         setGraphWidth(
