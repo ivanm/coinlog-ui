@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CurrencyCard = props => {
-    const {
-        name,
-        trendFormatted,
-        trend,
-        priceFormatted,
-        onClickCurrency,
-        selected,
-        style
-    } = props;
+const CurrencyCard = ({
+    name,
+    trendFormatted,
+    trend,
+    priceFormatted,
+    onClickCurrency,
+    selected,
+    style
+}) => {
     const trendClass = trend > 0 ? 'green-trend' : 'red-trend';
-
     return (
         <div
             onClick={onClickCurrency}
