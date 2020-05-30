@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>coinlog.sh</title>
-        <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css'/>
-        <link rel="manifest" href="manifest.json">
-        <meta name=viewport content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1,user-scalable=no">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/pure/1.0.0/pure-min.css"
+        />
+        <link rel="manifest" href="manifest.json" />
+        <meta
+            name="viewport"
+            content="width=device-width,height=device-height,initial-scale=1,maximum-scale=1,user-scalable=no"
+        />
     </head>
     <style>
         body {
@@ -32,7 +38,7 @@
             background-color: #232527;
             position: relative;
             display: grid;
-            grid-template-rows: 40px 40px 40px 45px 1fr;
+            grid-template-rows: 40px 40px 45px 1fr;
             height: inherit;
         }
         .left-pane .modal {
@@ -79,7 +85,7 @@
             background-color: #2a2b2d;
         }
         .title-dot {
-            color:#d57474;
+            color: #d57474;
         }
         .currency-card {
             border: 1px solid #161719;
@@ -182,7 +188,7 @@
             align-items: center;
         }
         .currency-selector {
-            color: #a5a566
+            color: #a5a566;
         }
         .overflow-wrapper {
             overflow: auto;
@@ -190,7 +196,7 @@
         .link-hover {
             cursor: pointer;
         }
-        .link-hover:hover .link-hover-underline{
+        .link-hover:hover .link-hover-underline {
             text-decoration: underline;
         }
         .card.card-arrow-color {
@@ -200,7 +206,10 @@
             background-color: #164b6b;
             width: auto !important;
         }
-        .multi-card-container .card .card-wrapper.card-arrow-block .card-content {
+        .multi-card-container
+            .card
+            .card-wrapper.card-arrow-block
+            .card-content {
             padding-left: 10px;
             text-align: left;
         }
@@ -208,8 +217,8 @@
             border-top: 16px solid transparent;
             border-bottom: 16px solid transparent;
             border-left: 16px solid #164b6b;
-            width:0px;
-            height:0px;
+            width: 0px;
+            height: 0px;
         }
         .card.card-arrow-container {
             display: flex;
@@ -224,6 +233,34 @@
             .container {
                 grid-template-columns: 1fr 0fr;
             }
+        }
+        .block {
+            white-space: pre;
+        }
+        .default-theme .block {
+            border: 1px solid #161719;
+            height: 33px;
+            background-color: #2a2b2d;
+        }
+        .default-theme .main-pane-mobile,
+        .default-theme .left-pane {
+            background-color: #232527;
+        }
+        .default-font {
+            text-align: center;
+            font-family: monospace;
+            color: #bfc4cc;
+        }
+        .block.block-centered {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .block-clickable {
+            cursor: pointer;
+        }
+        .block-clickable:hover {
+            text-decoration: underline;
         }
     </style>
     <body>

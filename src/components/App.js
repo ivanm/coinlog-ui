@@ -4,6 +4,7 @@ import Plot from 'react-plotly.js';
 
 // components
 import CurrencyCard from './CurrencyCard';
+import Block from './blocks/Block';
 
 // redux
 import { connect } from 'react-redux';
@@ -82,7 +83,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     }, [trend]);
 
     useEffect(() => {
-        resize()
+        resize();
     }, [selectedCurrency]);
 
     const resize = () => {
@@ -223,7 +224,9 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     const hidingOnMobile = mobileView && selectedCurrency && mobileCompactView;
 
     return (
-        <div className="container" style={{ height: viewPortHeight }}>
+        <div
+            className="container default-theme default-font"
+            style={{ height: viewPortHeight }}>
             <div
                 className="left-pane"
                 style={
@@ -270,82 +273,34 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                 </div>
                 <div
                     className={
-                        'multi-card-container grid-1fr' +
-                        (hidingOnMobile ? ' hidden-container' : '')
-                    }>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeSort}>
-                                search...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className={
                         'multi-card-container grid-1fr-1fr-1fr' +
                         (hidingOnMobile ? ' hidden-container' : '')
                     }>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeOrder}>
-                                <span className="link-hover-underline">
-                                    order
-                                    <span className="title-dot">: </span>
-                                    {orderOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeSort}>
-                                <span className="link-hover-underline">
-                                    sort
-                                    <span className="title-dot">: </span>
-                                    {sortOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div className="card-content">
-                                view<span className="title-dot">:</span> cards
-                            </div>
-                        </div>
-                    </div>
+                    <Block onClick={changeOrder}>
+                        order
+                        <span className="title-dot">: </span>
+                        {orderOption.name}
+                    </Block>
+                    <Block onClick={changeSort}>
+                        sort
+                        <span className="title-dot">: </span>
+                        {sortOption.name}
+                    </Block>
+                    <Block>
+                        view<span className="title-dot">: </span>cards
+                    </Block>
                 </div>
                 <div
                     className="multi-card-container"
                     style={{ gridTemplateColumns: '1fr 2fr' }}>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeTrend}>
-                                <span className="link-hover-underline">
-                                    trend
-                                    <span className="title-dot">: </span>
-                                    {trendOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div className="card-content">
-                                api<span className="title-dot">:</span>{' '}
-                                cryptocompare
-                            </div>
-                        </div>
-                    </div>
+                    <Block onClick={changeTrend}>
+                        trend
+                        <span className="title-dot">: </span>
+                        {trendOption.name}
+                    </Block>
+                    <Block>
+                        api<span className="title-dot">: </span>cryptocompare
+                    </Block>
                 </div>
                 {mobileView && selectedCurrency ? (
                     <div className="main-pane-mobile">
