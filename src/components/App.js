@@ -249,8 +249,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                             ? '40px 0px 49px 1fr'
                             : '40px 40px 49px 1fr'
                         : '40px 40px 49px 1fr'
-                }
-                style={{ height: '100vh' }}>
+                }>
                 <Row gridTemplateColumns="40px 1fr">
                     <Block
                         isCentered
@@ -337,8 +336,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
             {!isMobileView && (
                 <Column
                     gridTemplateRows="1fr"
-                    className="bg-color-secondary"
-                    style={{ height: '100vh' }}>
+                    className="bg-color-secondary">
                     <Row gridTemplateColumns="1fr">
                         <Block
                             className="bg-color-secondary border-color-secondary"
