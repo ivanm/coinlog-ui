@@ -1,21 +1,23 @@
-@import "tailwindcss/base";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 body {
     background: black;
 }
-.container {
+.blocks-container {
     display: grid;
     grid-template-columns: 2fr 3fr;
     height: 100vh;
 }
-.container a {
+.blocks-container a {
     color: #bfc4cc;
     text-decoration: none;
 }
-.container a.important-link {
+.blocks-container a.important-link {
     color: #a5a566;
 }
-.container a:hover {
+.blocks-container a:hover {
     text-decoration: underline;
 }
 .left-pane {
@@ -62,7 +64,7 @@ body {
 .nav-title {
     border: 1px solid #161719;
     color: #bfc4cc;
-    margin: 5px;
+    margin: 0.5rem;
     padding: 12px;
     font-family: monospace;
     text-align: center;
@@ -73,7 +75,7 @@ body {
 }
 .currency-card {
     border: 1px solid #161719;
-    margin: 5px;
+    margin: 0.5rem;
     padding: 12px;
     font-family: monospace;
     color: #bfc4cc;
@@ -81,7 +83,7 @@ body {
     background-color: #2a2b2d;
 }
 .currency-card .currency-code {
-    padding: 5px;
+    padding: 0.5rem;
 }
 .currency-card .currency-price {
     color: white;
@@ -108,10 +110,10 @@ body {
 }
 .multi-card-container {
     display: grid;
-    grid-gap: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    margin-top: 5px;
+    grid-gap: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
 }
 .multi-card-container.hidden-container {
     opacity: 0;
@@ -214,32 +216,91 @@ a.active-link {
     }
 }
 .block {
+    height: 33px;
     white-space: pre;
+    display: flex;
+    align-items: center;
+    &.block-centered {
+        justify-content: center;
+    }
+    .block-segment {
+        display: flex;
+        height: 100%;
+        align-items: center;
+    }
+    .block-segment-arrow {
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 16px solid transparent;
+        width: 0px;
+        height: 0px;
+    }
 }
+.blocks-row {
+    display: grid;
+    grid-gap: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+}
+.blocks-column {
+    background-color: #232527;
+    display: grid;
+    height: inherit;
+    position: relative;
+}
+.clickable {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+    &.clickable-no-underline {
+        text-decoration: none;
+    }
+}
+.flex-column-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+.modal {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+    background: black;
+    opacity: 0;
+    visibility: hidden;
+}
+.modal-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Theme: Default */
 .default-theme {
     .block {
         border: 1px solid #161719;
-        height: 33px;
         background-color: #2a2b2d;
+        &.block-selected {
+            background-color: #343434;
+        }
+        .block-segment-arrow {
+            border-left: 16px solid #164b6b;
+        }
     }
     .main-pane-mobile,
     .left-pane {
         background-color: #232527;
+    }
+    .bg-color-title {
+        background-color: #164b6b;
     }
 }
 .default-font {
     text-align: center;
     font-family: monospace;
     color: #bfc4cc;
-}
-.block.block-centered {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.block-clickable {
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
-    }
 }

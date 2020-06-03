@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Plot from 'react-plotly.js';
 
 // components
-import CurrencyCard from './CurrencyCard';
+import CurrencyBlock from './CurrencyBlock';
 import Block from './blocks/Block';
+import BlockSegment from './blocks/BlockSegment';
+import Row from './blocks/Row';
+import Column from './blocks/Column';
 
 // redux
 import { connect } from 'react-redux';
@@ -225,57 +228,34 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
 
     return (
         <div
-            className="container default-theme default-font"
+            className="blocks-container default-theme default-font"
             style={{ height: viewPortHeight }}>
-            <div
-                className="left-pane"
-                style={
-                    hidingOnMobile
-                        ? { gridTemplateRows: '40px 0px 0px 45px 1fr' }
-                        : {}
-                }>
-                <div
-                    className="multi-card-container grid-3fr-3fr-1fr-1fr"
-                    style={{ gridTemplateColumns: '40px 1fr' }}>
-                    <div className="card card-arrow-color">
-                        <div className="card-wrapper">
-                            {!selectedCurrency ? (
-                                <div
-                                    className="card-content link-hover"
-                                    onClick={toggleOptions}>
-                                    {' '}
-                                    ☰{' '}
-                                </div>
-                            ) : (
-                                <div
-                                    className="card-content link-hover"
-                                    onClick={logoClick}>
-                                    {' '}
-                                    ⬅{' '}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="card card-arrow-container">
-                        <div className="card-wrapper card-arrow-block">
-                            <div className="card-content link-hover">
-                                <span onClick={logoClick} className="">
-                                    <span>
-                                        coinlog
-                                        <span className="title-dot">.</span>
-                                        sh
-                                    </span>
+            <Column
+                gridTemplateRows={hidingOnMobile ? '' : '2.5rem 2.5rem 3rem 1fr'}
+                className="left-column">
+                <Row gridTemplateColumns="40px 1fr" isHidden={hidingOnMobile}>
+                    <Block
+                        isCentered
+                        className="clickable-no-underline bg-color-title"
+                        onClick={selectedCurrency ? logoClick : toggleOptions}>
+                        {!selectedCurrency ? ' ☰ ' : ' ⬅'}
+                    </Block>
+                    <Block isCentered={false}>
+                        <BlockSegment className="bg-color-title px-2">
+                            <span onClick={logoClick} className="clickable">
+                                <span>
+                                    coinlog
+                                    <span className="title-dot">.</span>
+                                    sh
                                 </span>
-                            </div>
-                        </div>
-                        <div className="card-arrow-head" />
-                    </div>
-                </div>
-                <div
-                    className={
-                        'multi-card-container grid-1fr-1fr-1fr' +
-                        (hidingOnMobile ? ' hidden-container' : '')
-                    }>
+                            </span>
+                        </BlockSegment>
+                        <BlockSegment className="block-segment-arrow" />
+                    </Block>
+                </Row>
+                <Row
+                    gridTemplateColumns="1fr 1fr 1fr"
+                    isHidden={hidingOnMobile}>
                     <Block onClick={changeOrder}>
                         order
                         <span className="title-dot">: </span>
@@ -289,10 +269,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     <Block>
                         view<span className="title-dot">: </span>cards
                     </Block>
-                </div>
-                <div
-                    className="multi-card-container"
-                    style={{ gridTemplateColumns: '1fr 2fr' }}>
+                </Row>
+                <Row gridTemplateColumns="1fr 2fr">
                     <Block onClick={changeTrend}>
                         trend
                         <span className="title-dot">: </span>
@@ -301,7 +279,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     <Block>
                         api<span className="title-dot">: </span>cryptocompare
                     </Block>
-                </div>
+                </Row>
                 {mobileView && selectedCurrency ? (
                     <div className="main-pane-mobile">
                         <div className="main-pane-wrapper">
@@ -325,19 +303,12 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                                 ? { opacity: 0, height: 0 }
                                 : {}
                         }>
-                        {data.currencies.map((currency, index) => {
-                            return (
+                        {data.currencies.map(
+                            (currency, index) =>
                                 data[historicKey][currency] && (
-                                    <CurrencyCard
+                                    <CurrencyBlock
                                         {...data[historicKey][currency]}
                                         name={currency}
-                                        style={
-                                            index == 0
-                                                ? {
-                                                      margin: '0px 5px 5px 5px'
-                                                  }
-                                                : undefined
-                                        }
                                         fiatCurrency={fiatCurrency}
                                         key={index}
                                         onClickCurrency={() =>
@@ -346,11 +317,10 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                                         selected={selectedCurrency == currency}
                                     />
                                 )
-                            );
-                        })}
+                        )}
                     </div>
                 )}
-                <div className={`modal ${showOptions ? 'active' : ''}`}>
+                <div className={`modal ${showOptions ? 'modal-active' : ''}`}>
                     <div
                         className="multi-card-container"
                         style={{ gridTemplateColumns: '50px 1fr 1fr' }}>
@@ -409,7 +379,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Column>
             <div className="main-pane">
                 <div className="main-pane-wrapper">
                     <div className="main-content">
