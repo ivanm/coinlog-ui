@@ -301,7 +301,11 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     <Row
                         gridTemplateColumns="1fr"
                         className="bg-color-secondary"
-                        style={{ padding: '0.5rem', marginTop: 0 }}>
+                        style={{
+                            padding: '0.5rem',
+                            marginTop: 0,
+                            marginBottom: '0.5rem'
+                        }}>
                         <Block
                             className="bg-color-secondary border-color-secondary"
                             height="auto">
@@ -334,9 +338,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                 />
             </Column>
             {!isMobileView && (
-                <Column
-                    gridTemplateRows="1fr"
-                    className="bg-color-secondary">
+                <Column gridTemplateRows="1fr" className="bg-color-secondary">
                     <Row gridTemplateColumns="1fr">
                         <Block
                             className="bg-color-secondary border-color-secondary"
