@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Plot from 'react-plotly.js';
 
 // components
-import CurrencyCard from './CurrencyCard';
+import CurrencyBlocks from './CurrencyBlocks';
+import SettingsModal from './SettingsModal';
+import MainChart from './MainChart';
+
+// blocks
+import Block from './blocks/Block';
+import BlockSegment from './blocks/BlockSegment';
+import Row from './blocks/Row';
+import Column from './blocks/Column';
 
 // redux
 import { connect } from 'react-redux';
@@ -35,7 +42,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         selectedCurrency: null
     });
 
-    const [graphWidth, setGraphWidth] = useState(null);
+    const [graphWidth, setGraphWidth] = useState(undefined);
+    const [graphHeight, setGraphHeight] = useState(undefined);
     const [viewPortHeight, setViewPortHeight] = useState(window.innerHeight);
     const [viewPortWidth, setViewPortWidth] = useState(window.innerWidth);
 
@@ -82,12 +90,19 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     }, [trend]);
 
     useEffect(() => {
-        resize()
+        resize();
     }, [selectedCurrency]);
 
     const resize = () => {
         setGraphWidth(
-            document.getElementById('data-viewport').offsetWidth - 40
+            document.getElementById('data-viewport')
+                ? document.getElementById('data-viewport').offsetWidth - 40
+                : undefined
+        );
+        setGraphHeight(
+            document.getElementById('data-viewport')
+                ? document.getElementById('data-viewport').offsetHeight - 40
+                : undefined
         );
         setViewPortHeight(window.innerHeight);
         setViewPortWidth(window.innerWidth);
@@ -161,6 +176,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
 
     const layoutGraph = {
         width: graphWidth,
+        height: graphHeight,
         dragmode: 'zoom',
         margin: {
             r: 10,
@@ -218,255 +234,135 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
           ]
         : [];
 
-    const mobileView = viewPortWidth < 600;
-    const mobileCompactView = true;
-    const hidingOnMobile = mobileView && selectedCurrency && mobileCompactView;
+    const isMobileView = viewPortWidth < 600;
+    const isHidingonMobile = isMobileView && selectedCurrency;
 
     return (
-        <div className="container" style={{ height: viewPortHeight }}>
-            <div
-                className="left-pane"
-                style={
-                    hidingOnMobile
-                        ? { gridTemplateRows: '40px 0px 0px 45px 1fr' }
-                        : {}
-                }>
-                <div
-                    className="multi-card-container grid-3fr-3fr-1fr-1fr"
-                    style={{ gridTemplateColumns: '40px 1fr' }}>
-                    <div className="card card-arrow-color">
-                        <div className="card-wrapper">
-                            {!selectedCurrency ? (
-                                <div
-                                    className="card-content link-hover"
-                                    onClick={toggleOptions}>
-                                    {' '}
-                                    ☰{' '}
-                                </div>
-                            ) : (
-                                <div
-                                    className="card-content link-hover"
-                                    onClick={logoClick}>
-                                    {' '}
-                                    ⬅{' '}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                    <div className="card card-arrow-container">
-                        <div className="card-wrapper card-arrow-block">
-                            <div className="card-content link-hover">
-                                <span onClick={logoClick} className="">
-                                    <span>
-                                        coinlog
-                                        <span className="title-dot">.</span>
-                                        sh
-                                    </span>
+        <Row
+            className="default-theme default-font"
+            gridTemplateColumns={isMobileView ? '1fr 0fr' : '2fr 3fr'}
+            style={{ height: viewPortHeight, margin: 0, gridGap: 0 }}>
+            <Column
+                gridTemplateRows={
+                    isMobileView
+                        ? selectedCurrency
+                            ? '40px 0px 49px 1fr'
+                            : '40px 40px 49px 1fr'
+                        : '40px 40px 49px 1fr'
+                }
+                style={{ height: '100vh' }}>
+                <Row gridTemplateColumns="40px 1fr">
+                    <Block
+                        isCentered
+                        className="clickable-no-underline bg-color-title"
+                        onClick={selectedCurrency ? logoClick : toggleOptions}>
+                        {!selectedCurrency ? ' ☰ ' : '⬅'}
+                    </Block>
+                    <Block isCentered={false}>
+                        <BlockSegment className="bg-color-title px-2">
+                            <span onClick={logoClick} className="clickable">
+                                <span>
+                                    coinlog
+                                    <span className="title-dot">.</span>
+                                    sh
                                 </span>
-                            </div>
-                        </div>
-                        <div className="card-arrow-head" />
-                    </div>
-                </div>
-                <div
-                    className={
-                        'multi-card-container grid-1fr' +
-                        (hidingOnMobile ? ' hidden-container' : '')
-                    }>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeSort}>
-                                search...
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className={
-                        'multi-card-container grid-1fr-1fr-1fr' +
-                        (hidingOnMobile ? ' hidden-container' : '')
-                    }>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeOrder}>
-                                <span className="link-hover-underline">
-                                    order
-                                    <span className="title-dot">: </span>
-                                    {orderOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeSort}>
-                                <span className="link-hover-underline">
-                                    sort
-                                    <span className="title-dot">: </span>
-                                    {sortOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div className="card-content">
-                                view<span className="title-dot">:</span> cards
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    className="multi-card-container"
-                    style={{ gridTemplateColumns: '1fr 2fr' }}>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div
-                                className="card-content link-hover"
-                                onClick={changeTrend}>
-                                <span className="link-hover-underline">
-                                    trend
-                                    <span className="title-dot">: </span>
-                                    {trendOption.name}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card">
-                        <div className="card-wrapper">
-                            <div className="card-content">
-                                api<span className="title-dot">:</span>{' '}
-                                cryptocompare
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {mobileView && selectedCurrency ? (
-                    <div className="main-pane-mobile">
-                        <div className="main-pane-wrapper">
-                            <div className="main-content">
-                                <div id="data-viewport" className="big-chart">
-                                    {selectedCurrency && (
-                                        <Plot
-                                            data={dataGraph}
-                                            layout={layoutGraph}
+                            </span>
+                        </BlockSegment>
+                        <BlockSegment className="block-segment-arrow" />
+                    </Block>
+                </Row>
+                <Row gridTemplateColumns="1fr 1fr 1fr">
+                    <Block onClick={changeOrder}>
+                        order
+                        <span className="title-dot">: </span>
+                        {orderOption.name}
+                    </Block>
+                    <Block onClick={changeSort}>
+                        sort
+                        <span className="title-dot">: </span>
+                        {sortOption.name}
+                    </Block>
+                    <Block>
+                        view<span className="title-dot">: </span>cards
+                    </Block>
+                </Row>
+                <Row
+                    gridTemplateColumns="1fr 2fr"
+                    style={{ marginBottom: '0.5rem' }}>
+                    <Block onClick={changeTrend}>
+                        trend
+                        <span className="title-dot">: </span>
+                        {trendOption.name}
+                    </Block>
+                    <Block>
+                        api<span className="title-dot">: </span>cryptocompare
+                    </Block>
+                </Row>
+                {isHidingonMobile ? (
+                    <Row
+                        gridTemplateColumns="1fr"
+                        className="bg-color-secondary"
+                        style={{ padding: '0.5rem', marginTop: 0 }}>
+                        <Block
+                            className="bg-color-secondary border-color-secondary"
+                            height="auto">
+                            <div id="data-viewport">
+                                {selectedCurrency &&
+                                    graphWidth &&
+                                    graphHeight && (
+                                        <MainChart
+                                            dataGraph={dataGraph}
+                                            layoutGraph={layoutGraph}
                                         />
                                     )}
-                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </Block>
+                    </Row>
                 ) : (
-                    <div
-                        className="overflow-wrapper"
-                        style={
-                            mobileView && selectedCurrency
-                                ? { opacity: 0, height: 0 }
-                                : {}
-                        }>
-                        {data.currencies.map((currency, index) => {
-                            return (
-                                data[historicKey][currency] && (
-                                    <CurrencyCard
-                                        {...data[historicKey][currency]}
-                                        name={currency}
-                                        style={
-                                            index == 0
-                                                ? {
-                                                      margin: '0px 5px 5px 5px'
-                                                  }
-                                                : undefined
-                                        }
-                                        fiatCurrency={fiatCurrency}
-                                        key={index}
-                                        onClickCurrency={() =>
-                                            handleCurrencyClick(currency)
-                                        }
-                                        selected={selectedCurrency == currency}
-                                    />
-                                )
-                            );
-                        })}
-                    </div>
+                    !isHidingonMobile && (
+                        <CurrencyBlocks
+                            data={data}
+                            historicKey={historicKey}
+                            fiatCurrency={fiatCurrency}
+                            onCurrencyClick={handleCurrencyClick}
+                            selectedCurrency={selectedCurrency}
+                        />
+                    )
                 )}
-                <div className={`modal ${showOptions ? 'active' : ''}`}>
-                    <div
-                        className="multi-card-container"
-                        style={{ gridTemplateColumns: '50px 1fr 1fr' }}>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div
-                                    onClick={toggleOptions}
-                                    className="card-content link-hover">
-                                    ⬅
-                                </div>
+                <SettingsModal
+                    isActive={showOptions}
+                    toggleActive={toggleOptions}
+                />
+            </Column>
+            {!isMobileView && (
+                <Column
+                    gridTemplateRows="1fr"
+                    className="bg-color-secondary"
+                    style={{ height: '100vh' }}>
+                    <Row gridTemplateColumns="1fr">
+                        <Block
+                            className="bg-color-secondary border-color-secondary"
+                            height="auto"
+                            style={{ marginBottom: '0.5rem' }}>
+                            <div
+                                id="data-viewport"
+                                style={{
+                                    maxHeight: '70vh'
+                                }}>
+                                {selectedCurrency &&
+                                    graphWidth &&
+                                    graphHeight && (
+                                        <MainChart
+                                            dataGraph={dataGraph}
+                                            layoutGraph={layoutGraph}
+                                        />
+                                    )}
                             </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">settings</div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">
-                                    v: 0.1.0 alpha
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="multi-card-container grid-1fr-1fr-1fr">
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">
-                                    <a
-                                        className="active-link"
-                                        href="#"
-                                        onClick={changeOrder}>
-                                        api
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">
-                                    <a href="#" onClick={changeSort}>
-                                        display
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="card">
-                            <div className="card-wrapper">
-                                <div className="card-content">
-                                    <a href="#" onClick={changeTrend}>
-                                        about
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="main-pane">
-                <div className="main-pane-wrapper">
-                    <div className="main-content">
-                        <div id="data-viewport" className="big-chart">
-                            {selectedCurrency && (
-                                <Plot data={dataGraph} layout={layoutGraph} />
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        </Block>
+                    </Row>
+                </Column>
+            )}
+        </Row>
     );
 };
 
