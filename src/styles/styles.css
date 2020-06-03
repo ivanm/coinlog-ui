@@ -1,0 +1,138 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Helpers */
+.overflow-wrapper {
+    overflow: auto;
+}
+.clickable {
+    cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
+    &.clickable-no-underline {
+        text-decoration: none;
+    }
+}
+.flex-column-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#data-viewport {
+    height: 100%;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Block */
+.block {
+    height: 33px;
+    white-space: pre;
+    display: flex;
+    align-items: center;
+    &.block-centered {
+        justify-content: center;
+    }
+    .block-segment {
+        display: flex;
+        height: 100%;
+        align-items: center;
+    }
+    .block-segment-arrow {
+        border-top: 16px solid transparent;
+        border-bottom: 16px solid transparent;
+        border-left: 16px solid transparent;
+        width: 0px;
+        height: 0px;
+    }
+}
+
+/* Row */
+.blocks-row {
+    display: grid;
+    grid-gap: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Column */
+.blocks-column {
+    background-color: #232527;
+    display: grid;
+    height: inherit;
+    position: relative;
+}
+
+/* Modal */
+.modal {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: all 0.5s linear;
+    transition: all 0.5s linear;
+    background: black;
+    opacity: 0;
+    visibility: hidden;
+}
+.modal-active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Theme: Default */
+.default-theme {
+    .block {
+        border: 1px solid #161719;
+        background-color: #2a2b2d;
+        &.block-selected {
+            background-color: #343434;
+        }
+        .block-segment-arrow {
+            border-left: 16px solid #164b6b;
+        }
+    }
+    .main-pane-mobile,
+    .left-pane {
+        background-color: #232527;
+    }
+    .modal {
+        .blocks-column {
+            background-color: black;
+        }
+        .block {
+            background-color: #0e0e0e;
+            border: 1px solid #161719;
+        }
+    }
+    .selector {
+        color: #a5a566;
+    }
+    .green-trend {
+        color: #5ea35e;
+    }
+    .red-trend {
+        color: #af4d4d;
+    }
+    .bg-color-title {
+        background-color: #164b6b;
+    }
+    .bg-color-secondary {
+        background-color: #161719;
+    }
+    .border-color-secondary {
+        border: 1px solid #2b2c2d;
+    }
+}
+
+/* Font: Default */
+.default-font {
+    text-align: center;
+    font-family: monospace;
+    color: #bfc4cc;
+}
