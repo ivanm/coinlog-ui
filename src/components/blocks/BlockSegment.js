@@ -17,7 +17,7 @@ const BlockSegment = ({ onClick, children, className }) => {
 BlockSegment.propTypes = {
     onClick: PropTypes.func,
     children: PropTypes.node,
-    className: PropTypes.sting
+    className: PropTypes.string
 };
 
 BlockSegment.defaultProps = {

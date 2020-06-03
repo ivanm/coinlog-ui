@@ -2,8 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const Row = ({ isHidden, children, gridTemplateColumns, className, style }) => (
+const Row = ({
+    isHidden,
+    children,
+    gridTemplateColumns,
+    className,
+    id,
+    style
+}) => (
     <div
+        id={id}
         className={cn(`${className} blocks-row`, {
             hidden: isHidden
         })}
@@ -19,7 +27,8 @@ Row.propTypes = {
     gridTemplateColumns: PropTypes.string,
     isHidden: PropTypes.bool,
     children: PropTypes.node,
-    className: PropTypes.sting,
+    className: PropTypes.string,
+    id: PropTypes.string,
     style: PropTypes.object
 };
 

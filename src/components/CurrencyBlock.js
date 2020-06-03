@@ -22,7 +22,7 @@ const CurrencyBlock = ({
             height="auto">
             <div className="flex-column-wrapper">
                 <div className="currency-code">
-                    <span className="currency-selector">
+                    <span className="selector">
                         {selected && '▸ '}
                     </span>
                     {name}

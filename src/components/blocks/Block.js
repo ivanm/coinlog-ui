@@ -9,10 +9,12 @@ const Block = ({
     width,
     height,
     className,
+    id,
     style
 }) => {
     return (
         <div
+            id={id}
             className={cn(`${className} block`, {
                 'block-centered': isCentered,
                 clickable: onClick
@@ -34,7 +36,8 @@ Block.propTypes = {
     isCentered: PropTypes.bool,
     onClick: PropTypes.func,
     children: PropTypes.node,
-    className: PropTypes.sting,
+    className: PropTypes.string,
+    id: PropTypes.string,
     style: PropTypes.object
 };
 

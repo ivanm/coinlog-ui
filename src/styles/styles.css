@@ -2,219 +2,32 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-body {
-    background: black;
-}
-.blocks-container {
-    display: grid;
-    grid-template-columns: 2fr 3fr;
-    height: 100vh;
-}
-.blocks-container a {
-    color: #bfc4cc;
-    text-decoration: none;
-}
-.blocks-container a.important-link {
-    color: #a5a566;
-}
-.blocks-container a:hover {
-    text-decoration: underline;
-}
-.left-pane {
-    background-color: #232527;
-    position: relative;
-    display: grid;
-    grid-template-rows: 40px 40px 45px 1fr;
-    height: inherit;
-}
-.left-pane .modal {
-    position: absolute !important;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    -webkit-transition: all 0.5s linear;
-    transition: all 0.5s linear;
-    background: black;
-    opacity: 0;
-    visibility: hidden;
-}
-.left-pane .modal.active {
-    opacity: 1;
-    visibility: visible;
-}
-.main-pane {
-    background-color: #161719;
-    height: inherit;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    align-items: center;
-    overflow: hidden;
-}
-.main-pane-mobile {
-    background-color: #161719;
-    height: auto;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    align-items: center;
-    overflow: hidden;
-}
-.nav-title {
-    border: 1px solid #161719;
-    color: #bfc4cc;
-    margin: 0.5rem;
-    padding: 12px;
-    font-family: monospace;
-    text-align: center;
-    background-color: #2a2b2d;
-}
-.title-dot {
-    color: #d57474;
-}
-.currency-card {
-    border: 1px solid #161719;
-    margin: 0.5rem;
-    padding: 12px;
-    font-family: monospace;
-    color: #bfc4cc;
-    text-align: center;
-    background-color: #2a2b2d;
-}
-.currency-card .currency-code {
-    padding: 0.5rem;
-}
-.currency-card .currency-price {
-    color: white;
-}
-.currency-card.card-selected {
-    background-color: #343434;
-}
-.green-trend {
-    color: #5ea35e;
-}
-.red-trend {
-    color: #af4d4d;
-}
-.main-pane-wrapper {
-    border: 1px solid #2b2c2d;
-    height: calc(100% - 10px);
-    box-sizing: border-box;
-    width: calc(100% - 10px);
-    display: flex;
-    justify-content: center;
-}
-.main-content {
-    width: 100%;
-}
-.multi-card-container {
-    display: grid;
-    grid-gap: 0.5rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    margin-top: 0.5rem;
-}
-.multi-card-container.hidden-container {
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-}
-.multi-card-container.grid-1fr-1fr-1fr {
-    grid-template-columns: 1fr 1fr 1fr;
-}
-.multi-card-container.grif-2fr-1fr {
-    grid-template-columns: 2fr 1fr;
-}
-.multi-card-container.grid-2fr-2fr-1fr {
-    grid-template-columns: 2fr 2fr 1fr;
-}
-.multi-card-container.grid-2fr-2fr-1fr-1fr {
-    grid-template-columns: 2fr 2fr 1fr 1fr;
-}
-.multi-card-container.grid-3fr-3fr-1fr-1fr {
-    grid-template-columns: 3fr 3fr 1fr 1fr;
-}
-.multi-card-container.grid-1fr-1fr {
-    grid-template-columns: 1fr 1fr;
-}
-.multi-card-container.grid-1fr {
-    grid-template-columns: 1fr;
-}
-.multi-card-container .card {
-    border: 1px solid #161719;
-    height: 33px;
-    background-color: #2a2b2d;
-}
-.modal .multi-card-container .card {
-    background-color: #0e0e0e;
-}
-.multi-card-container .card .card-wrapper {
-    display: table;
-    height: 100%;
-    width: 100%;
-}
-.multi-card-container .card .card-wrapper .card-content {
-    display: table-cell;
-    vertical-align: middle;
-    text-align: center;
-    font-family: monospace;
-    color: #bfc4cc;
-}
-a.active-link {
-    text-decoration: underline;
-}
-.big-chart {
-    width: 100%;
-    height: stretch;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.currency-selector {
-    color: #a5a566;
-}
+/* Helpers */
 .overflow-wrapper {
     overflow: auto;
 }
-.link-hover {
+.clickable {
     cursor: pointer;
-}
-.link-hover:hover .link-hover-underline {
-    text-decoration: underline;
-}
-.card.card-arrow-color {
-    background-color: #164b6b;
-}
-.card-arrow-block {
-    background-color: #164b6b;
-    width: auto !important;
-}
-.multi-card-container .card .card-wrapper.card-arrow-block .card-content {
-    padding-left: 10px;
-    text-align: left;
-}
-.card-arrow-head {
-    border-top: 16px solid transparent;
-    border-bottom: 16px solid transparent;
-    border-left: 16px solid #164b6b;
-    width: 0px;
-    height: 0px;
-}
-.card.card-arrow-container {
-    display: flex;
-    flex-direction: row;
-}
-.menu-link {
-    padding-left: 9px;
-    padding-right: 9px;
-    text-align: center;
-}
-@media only screen and (max-width: 600px) {
-    .container {
-        grid-template-columns: 1fr 0fr;
+    &:hover {
+        text-decoration: underline;
+    }
+    &.clickable-no-underline {
+        text-decoration: none;
     }
 }
+.flex-column-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#data-viewport {
+    height: 100%;
+    width: 100%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+/* Block */
 .block {
     height: 33px;
     white-space: pre;
@@ -236,6 +49,8 @@ a.active-link {
         height: 0px;
     }
 }
+
+/* Row */
 .blocks-row {
     display: grid;
     grid-gap: 0.5rem;
@@ -243,25 +58,16 @@ a.active-link {
     margin-right: 0.5rem;
     margin-top: 0.5rem;
 }
+
+/* Column */
 .blocks-column {
     background-color: #232527;
     display: grid;
     height: inherit;
     position: relative;
 }
-.clickable {
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
-    }
-    &.clickable-no-underline {
-        text-decoration: none;
-    }
-}
-.flex-column-wrapper {
-    display: flex;
-    flex-direction: column;
-}
+
+/* Modal */
 .modal {
     position: absolute !important;
     top: 0;
@@ -295,6 +101,24 @@ a.active-link {
     .left-pane {
         background-color: #232527;
     }
+    .modal {
+        .blocks-column {
+            background-color: black;
+        }
+        .block {
+            background-color: #0e0e0e;
+            border: 1px solid #161719;
+        }
+    }
+    .selector {
+        color: #a5a566;
+    }
+    .green-trend {
+        color: #5ea35e;
+    }
+    .red-trend {
+        color: #af4d4d;
+    }
     .bg-color-title {
         background-color: #164b6b;
     }
@@ -305,6 +129,8 @@ a.active-link {
         border: 1px solid #2b2c2d;
     }
 }
+
+/* Font: Default */
 .default-font {
     text-align: center;
     font-family: monospace;
