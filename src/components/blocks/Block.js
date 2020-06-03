@@ -2,16 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const Block = ({ isCentered, onClick, children, width, height, className }) => {
+const Block = ({
+    isCentered,
+    onClick,
+    children,
+    width,
+    height,
+    className,
+    style
+}) => {
     return (
         <div
             className={cn(`${className} block`, {
                 'block-centered': isCentered,
-                'clickable': onClick
+                clickable: onClick
             })}
             style={{
                 ...(width ? { width } : {}),
-                ...(height ? { height } : {})
+                ...(height ? { height } : {}),
+                ...style
             }}
             onClick={onClick}>
             {children}
@@ -25,7 +34,8 @@ Block.propTypes = {
     isCentered: PropTypes.bool,
     onClick: PropTypes.func,
     children: PropTypes.node,
-    className: PropTypes.sting
+    className: PropTypes.sting,
+    style: PropTypes.object
 };
 
 Block.defaultProps = {
@@ -33,6 +43,7 @@ Block.defaultProps = {
     isCentered: true,
     className: '',
     height: '33px',
+    style: {}
 };
 
 export default Block;

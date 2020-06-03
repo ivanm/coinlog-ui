@@ -227,11 +227,14 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     const hidingOnMobile = mobileView && selectedCurrency && mobileCompactView;
 
     return (
-        <div
-            className="blocks-container default-theme default-font"
-            style={{ height: viewPortHeight }}>
+        <Row
+            className="default-theme default-font"
+            gridTemplateColumns="2fr 3fr"
+            style={{ height: viewPortHeight, margin: 0, gridGap: 0 }}>
             <Column
-                gridTemplateRows={hidingOnMobile ? '' : '2.5rem 2.5rem 3rem 1fr'}
+                gridTemplateRows={
+                    hidingOnMobile ? '' : '2.5rem 2.5rem 3rem 1fr'
+                }
                 className="left-column">
                 <Row gridTemplateColumns="40px 1fr" isHidden={hidingOnMobile}>
                     <Block
@@ -380,18 +383,21 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     </div>
                 </div>
             </Column>
-            <div className="main-pane">
-                <div className="main-pane-wrapper">
-                    <div className="main-content">
+            <Column gridTemplateRows="1fr" className="bg-color-secondary">
+                <Row gridTemplateColumns="1fr">
+                    <Block
+                        className="main-content bg-color-secondary border-color-secondary"
+                        height="auto"
+                        style={{ marginBottom: '0.5rem' }}>
                         <div id="data-viewport" className="big-chart">
                             {selectedCurrency && (
                                 <Plot data={dataGraph} layout={layoutGraph} />
                             )}
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                    </Block>
+                </Row>
+            </Column>
+        </Row>
     );
 };
 

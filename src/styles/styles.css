@@ -298,6 +298,12 @@ a.active-link {
     .bg-color-title {
         background-color: #164b6b;
     }
+    .bg-color-secondary {
+        background-color: #161719;
+    }
+    .border-color-secondary {
+        border: 1px solid #2b2c2d;
+    }
 }
 .default-font {
     text-align: center;

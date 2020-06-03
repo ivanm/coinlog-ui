@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const Column = ({ isHidden, children, gridTemplateRows }) => (
+const Column = ({ isHidden, children, gridTemplateRows, className, style }) => (
     <div
-        className={cn('blocks-column', {
+        className={cn(`${className} blocks-column`, {
             hidden: isHidden
         })}
         style={{
-            ...(gridTemplateRows ? { gridTemplateRows } : {})
+            ...(gridTemplateRows ? { gridTemplateRows } : {}),
+            ...style
         }}>
         {children}
     </div>
@@ -17,11 +18,15 @@ const Column = ({ isHidden, children, gridTemplateRows }) => (
 Column.propTypes = {
     gridTemplateRows: PropTypes.string,
     isHidden: PropTypes.bool,
-    children: PropTypes.node
+    children: PropTypes.node,
+    style: PropTypes.object,
+    className: PropTypes.string,
 };
 
 Column.defaultProps = {
-    isHidden: false
+    isHidden: false,
+    className: '',
+    style: {}
 };
 
 export default Column;
