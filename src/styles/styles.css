@@ -3,6 +3,11 @@
 @import 'tailwindcss/utilities';
 
 /* Helpers */
+html,
+body {
+    height: 100%;
+    background: black;
+}
 .overflow-wrapper {
     overflow: auto;
 }

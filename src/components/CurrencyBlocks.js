@@ -18,7 +18,7 @@ const CurrencyBlocks = ({
                         name={currency}
                         fiatCurrency={fiatCurrency}
                         key={index}
-                        onClickCurrency={() => onCurrencyClick(currency)}
+                        onClickCurrency={onCurrencyClick(currency)}
                         selected={selectedCurrency == currency}
                     />
                 )

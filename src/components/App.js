@@ -42,10 +42,16 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         selectedCurrency: null
     });
 
-    const [graphWidth, setGraphWidth] = useState(undefined);
-    const [graphHeight, setGraphHeight] = useState(undefined);
-    const [viewPortHeight, setViewPortHeight] = useState(window.innerHeight);
-    const [viewPortWidth, setViewPortWidth] = useState(window.innerWidth);
+    const [graphSize, setGraphSize] = useState({
+        width: null,
+        height: null
+    });
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+
+    const [currencyCardScrollTop, setCurrencyCardScrollTop] = useState(0);
 
     const {
         fiatCurrency,
@@ -93,19 +99,22 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         resize();
     }, [selectedCurrency]);
 
+    const isMobileView = windowSize.width < 600;
+    const isHidingonMobile = isMobileView && selectedCurrency;
+
     const resize = () => {
-        setGraphWidth(
-            document.getElementById('data-viewport')
+        setGraphSize({
+            width: document.getElementById('data-viewport')
                 ? document.getElementById('data-viewport').offsetWidth - 40
-                : undefined
-        );
-        setGraphHeight(
-            document.getElementById('data-viewport')
+                : graphSize.width,
+            height: document.getElementById('data-viewport')
                 ? document.getElementById('data-viewport').offsetHeight - 40
-                : undefined
-        );
-        setViewPortHeight(window.innerHeight);
-        setViewPortWidth(window.innerWidth);
+                : graphSize.height
+        });
+        setWindowSize({
+            height: window.innerHeight,
+            width: window.innerWidth
+        });
     };
 
     const changeOrder = () => {
@@ -145,7 +154,15 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         setFilters({ ...filters, showOptions: !showOptions });
     };
 
-    const handleCurrencyClick = newSelectedCurrency => {
+    const handleCurrencyClick = newSelectedCurrency => e => {
+        if (isMobileView) {
+            if (selectedCurrency) {
+                const o = e.target.parentNode;
+                setTimeout(() => o.scrollTo(0, currencyCardScrollTop), 1);
+            } else {
+                setCurrencyCardScrollTop(e.target.parentNode.scrollTop);
+            }
+        }
         setFilters({
             ...filters,
             selectedCurrency:
@@ -175,8 +192,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         : [];
 
     const layoutGraph = {
-        width: graphWidth,
-        height: graphHeight,
+        width: graphSize.width,
+        height: graphSize.height,
         dragmode: 'zoom',
         margin: {
             r: 10,
@@ -234,19 +251,18 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
           ]
         : [];
 
-    const isMobileView = viewPortWidth < 600;
-    const isHidingonMobile = isMobileView && selectedCurrency;
-
+    console.log(data);
+    console.log(selectedCurrency);
     return (
         <Row
             className="default-theme default-font"
             gridTemplateColumns={isMobileView ? '1fr 0fr' : '2fr 3fr'}
-            style={{ height: viewPortHeight, margin: 0, gridGap: 0 }}>
+            style={{ height: windowSize.height, margin: 0, gridGap: 0 }}>
             <Column
                 gridTemplateRows={
                     isMobileView
                         ? selectedCurrency
-                            ? '40px 0px 49px 1fr'
+                            ? '40px 0px 49px 83px 1fr'
                             : '40px 40px 49px 1fr'
                         : '40px 40px 49px 1fr'
                 }>
@@ -297,6 +313,23 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                         api<span className="title-dot">: </span>cryptocompare
                     </Block>
                 </Row>
+                <CurrencyBlocks
+                    data={
+                        isHidingonMobile
+                            ? {
+                                  ...data,
+                                  currencies: data.currencies.filter(
+                                      currency => currency == selectedCurrency
+                                  )
+                              }
+                            : data
+                    }
+                    historicKey={historicKey}
+                    fiatCurrency={fiatCurrency}
+                    onCurrencyClick={handleCurrencyClick}
+                    selectedCurrency={selectedCurrency}
+                />
+
                 {isHidingonMobile ? (
                     <Row
                         gridTemplateColumns="1fr"
@@ -311,8 +344,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                             height="auto">
                             <div id="data-viewport">
                                 {selectedCurrency &&
-                                    graphWidth &&
-                                    graphHeight && (
+                                    graphSize.width &&
+                                    graphSize.height && (
                                         <MainChart
                                             dataGraph={dataGraph}
                                             layoutGraph={layoutGraph}
@@ -322,15 +355,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                         </Block>
                     </Row>
                 ) : (
-                    !isHidingonMobile && (
-                        <CurrencyBlocks
-                            data={data}
-                            historicKey={historicKey}
-                            fiatCurrency={fiatCurrency}
-                            onCurrencyClick={handleCurrencyClick}
-                            selectedCurrency={selectedCurrency}
-                        />
-                    )
+                    <div />
                 )}
                 <SettingsModal
                     isActive={showOptions}
@@ -350,8 +375,8 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                                     maxHeight: '70vh'
                                 }}>
                                 {selectedCurrency &&
-                                    graphWidth &&
-                                    graphHeight && (
+                                    graphSize.width &&
+                                    graphSize.height && (
                                         <MainChart
                                             dataGraph={dataGraph}
                                             layoutGraph={layoutGraph}
