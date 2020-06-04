@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CurrencyBlock from './CurrencyBlock';
+import Block from './blocks/Block';
 
 const CurrencyBlocks = ({
     data,
@@ -9,7 +10,16 @@ const CurrencyBlocks = ({
     onCurrencyClick,
     selectedCurrency
 }) => (
-    <div className="overflow-wrapper">
+    <Block
+        className="bg-color-backround-darker"
+        style={{
+            paddingTop: 5,
+            marginLeft: 9,
+            marginRight: 9,
+            overflow: 'auto',
+            display: 'block',
+            height: 'auto'
+        }}>
         {data.currencies.map(
             (currency, index) =>
                 data[historicKey][currency] && (
@@ -23,7 +33,7 @@ const CurrencyBlocks = ({
                     />
                 )
         )}
-    </div>
+    </Block>
 );
 
 CurrencyBlocks.propTypes = {

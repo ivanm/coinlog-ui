@@ -8,6 +8,9 @@ body {
     height: 100%;
     background: black;
 }
+body {
+    overflow-behaviour: auto;
+}
 .overflow-wrapper {
     overflow: auto;
 }
@@ -40,6 +43,9 @@ body {
     align-items: center;
     &.block-centered {
         justify-content: center;
+    }
+    &::-webkit-scrollbar {
+        width: 8px;
     }
     .block-segment {
         display: flex;
@@ -98,6 +104,12 @@ body {
         &.block-selected {
             background-color: #343434;
         }
+        &::-webkit-scrollbar-track {
+            background-color: #222222;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #343434;
+        }
         .block-segment-arrow {
             border-left: 16px solid #164b6b;
         }
@@ -123,6 +135,9 @@ body {
     }
     .red-trend {
         color: #af4d4d;
+    }
+    .bg-color-backround-darker {
+        background-color: #222222;
     }
     .bg-color-title {
         background-color: #164b6b;

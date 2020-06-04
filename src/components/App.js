@@ -251,20 +251,21 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
           ]
         : [];
 
-    console.log(data);
-    console.log(selectedCurrency);
     return (
         <Row
             className="default-theme default-font"
             gridTemplateColumns={isMobileView ? '1fr 0fr' : '2fr 3fr'}
             style={{ height: windowSize.height, margin: 0, gridGap: 0 }}>
             <Column
+                style={{
+                    overflow: 'hidden'
+                }}
                 gridTemplateRows={
                     isMobileView
                         ? selectedCurrency
-                            ? '40px 0px 49px 83px 1fr'
-                            : '40px 40px 49px 1fr'
-                        : '40px 40px 49px 1fr'
+                            ? '40px 0px 49px 92px 1fr 40px'
+                            : '40px 40px 49px 1fr 40px'
+                        : '40px 40px 49px 1fr 40px'
                 }>
                 <Row gridTemplateColumns="40px 1fr">
                     <Block
@@ -329,15 +330,14 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     onCurrencyClick={handleCurrencyClick}
                     selectedCurrency={selectedCurrency}
                 />
-
-                {isHidingonMobile ? (
+                {isHidingonMobile && (
                     <Row
                         gridTemplateColumns="1fr"
                         className="bg-color-secondary"
                         style={{
                             padding: '0.5rem',
-                            marginTop: 0,
-                            marginBottom: '0.5rem'
+                            marginTop: '0.5rem',
+                            marginBottom: 0
                         }}>
                         <Block
                             className="bg-color-secondary border-color-secondary"
@@ -354,9 +354,12 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                             </div>
                         </Block>
                     </Row>
-                ) : (
-                    <div />
                 )}
+                <Row style={{}}>
+                    <Block className="bg-color-backround-darker">
+                        latest update: 2 min ago
+                    </Block>
+                </Row>
                 <SettingsModal
                     isActive={showOptions}
                     toggleActive={toggleOptions}
