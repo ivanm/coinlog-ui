@@ -60,6 +60,11 @@ body {
         height: 0px;
     }
 }
+.block-select-options {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+}
 
 /* Row */
 .blocks-row {
@@ -85,8 +90,8 @@ body {
     right: 0;
     bottom: 0;
     left: 0;
-    -webkit-transition: all 0.5s linear;
-    transition: all 0.5s linear;
+    -webkit-transition: all 0.1s linear;
+    transition: all 0.1s linear;
     background: black;
     opacity: 0;
     visibility: hidden;
@@ -112,6 +117,17 @@ body {
         }
         .block-segment-arrow {
             border-left: 16px solid #164b6b;
+        }
+    }
+    .block-select-options {
+        .block {
+            background-color: #222222;
+        }
+        &::-webkit-scrollbar-track {
+            background-color: #222222;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: #343434;
         }
     }
     .main-pane-mobile,

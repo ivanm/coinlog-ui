@@ -17,7 +17,7 @@ const Block = ({
             id={id}
             className={cn(`${className} block`, {
                 'block-centered': isCentered,
-                clickable: onClick
+                clickable: !!onClick
             })}
             style={{
                 ...(width ? { width } : {}),
@@ -42,7 +42,6 @@ Block.propTypes = {
 };
 
 Block.defaultProps = {
-    isClickable: false,
     isCentered: true,
     className: '',
     height: '33px',

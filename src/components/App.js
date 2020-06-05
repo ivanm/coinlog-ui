@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 // components
 import CurrencyBlocks from './CurrencyBlocks';
 import SettingsModal from './SettingsModal';
+import SelectedFieldModal from './SelectedFieldModal';
 import MainChart from './MainChart';
 
 // blocks
 import Block from './blocks/Block';
 import BlockSegment from './blocks/BlockSegment';
+import BlockSelect from './blocks/BlockSelect';
 import Row from './blocks/Row';
 import Column from './blocks/Column';
 
@@ -30,10 +32,10 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
             { id: 'desc', name: '▲' }
         ],
         trendOptions: [
-            { id: '1h', name: '1h' },
-            { id: '24h', name: '24h' },
-            { id: '7d', name: '7d' },
-            { id: '30d', name: '30d' }
+            { value: '1h', name: '1h' },
+            { value: '24h', name: '24h' },
+            { value: '7d', name: '7d' },
+            { value: '30d', name: '30d' }
         ],
         order: 'trend',
         sort: 'desc',
@@ -52,6 +54,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
     });
 
     const [currencyCardScrollTop, setCurrencyCardScrollTop] = useState(0);
+    const [selectedField, setSelectedField] = useState(null);
 
     const {
         fiatCurrency,
@@ -139,14 +142,10 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
         });
     };
 
-    const changeTrend = () => {
-        const trendIndex = trendOptions.findIndex(el => el.id == trend);
+    const setTrend = trend => {
         setFilters({
             ...filters,
-            trend:
-                trendOptions[
-                    trendIndex == trendOptions.length - 1 ? 0 : trendIndex + 1
-                ].id
+            trend
         });
     };
 
@@ -180,7 +179,6 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
 
     const orderOption = orderOptions.find(el => el.id == order);
     const sortOption = sortOptions.find(el => el.id == sort);
-    const trendOption = trendOptions.find(el => el.id == trend);
 
     const rangeDates = data[historicKey][selectedCurrency]
         ? [
@@ -305,11 +303,18 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                 <Row
                     gridTemplateColumns="1fr 2fr"
                     style={{ marginBottom: '0.5rem' }}>
-                    <Block onClick={changeTrend}>
-                        trend
-                        <span className="title-dot">: </span>
-                        {trendOption.name}
-                    </Block>
+                    <BlockSelect
+                        label="trend"
+                        options={trendOptions}
+                        selectedValue={trend}
+                        setSelectedValue={setTrend}
+                        onEnter={() => {
+                            setSelectedField('trend');
+                        }}
+                        onExit={() => {
+                            setSelectedField(null);
+                        }}
+                    />
                     <Block>
                         api<span className="title-dot">: </span>cryptocompare
                     </Block>
@@ -364,6 +369,7 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                     isActive={showOptions}
                     toggleActive={toggleOptions}
                 />
+                <SelectedFieldModal isActive={!!selectedField} />
             </Column>
             {!isMobileView && (
                 <Column gridTemplateRows="1fr" className="bg-color-secondary">
