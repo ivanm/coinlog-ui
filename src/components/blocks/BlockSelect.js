@@ -31,6 +31,7 @@ const BlockSelect = ({
             <div
                 style={{
                     zIndex: 2
+                    // TODO: Add inverted mode with marginTop: '-100px'
                 }}>
                 <Block className={className} onClick={handleParentClick}>
                     {label}
@@ -50,8 +51,6 @@ const BlockSelect = ({
                                 onClick={() => {
                                     handleChildrenClick(value);
                                 }}>
-                                {label}
-                                <span className="title-dot">: </span>
                                 {name}
                             </Block>
                         ))}
