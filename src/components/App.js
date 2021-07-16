@@ -360,10 +360,12 @@ const App = ({ data, refreshCurrency, orderCurrencies }) => {
                         </Block>
                     </Row>
                 )}
-                <Row style={{}}>
+                <Row gridTemplateColumns="1fr 50px 50px" style={{}}>
                     <Block className="bg-color-backround-darker">
                         latest update: 2 min ago
                     </Block>
+                    <Block className="bg-color-backround-darker">+</Block>
+                    <Block className="bg-color-backround-darker">[]</Block>
                 </Row>
                 <SettingsModal
                     isActive={showOptions}
