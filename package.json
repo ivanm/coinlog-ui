@@ -2,6 +2,7 @@
   "name": "coinlog-ui",
   "version": "0.1.1",
   "description": "Coinlog React App",
+  "homepage": "https://coinlog.vaan.dev",
   "main": "bundle.js",
   "repository": "git@github.com:ivanm/coinlog-ui.git",
   "author": "Ivan Mayoral <iimayoral@gmail.com>",
@@ -9,6 +10,7 @@
   "scripts": {
     "build-dev": "webpack --mode development",
     "build-prod": "webpack --mode production",
+    "deploy-prod": "gh-pages -d dist",
     "lint": "eslint webpack.config.js ./src --color",
     "lint-fix": "eslint webpack.config.js ./src --color --fix",
     "prettier": "prettier 'src/**/*.{js,jsx,json,css,scss}' --write",
@@ -28,6 +30,7 @@
     "eslint-loader": "^2.1.1",
     "eslint-plugin-react": "^7.4.0",
     "file-loader": "^2.0.0",
+    "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^3.2.0",
     "localstorage": "^1.0.1",
     "mini-css-extract-plugin": "^0.9.0",
